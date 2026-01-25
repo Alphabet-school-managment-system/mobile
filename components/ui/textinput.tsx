@@ -100,13 +100,17 @@ function TextInputProps(props: TextInputPropsType) {
       width: "100%" as unknown as number,
       ...(StyleSheet.flatten(outlineStyle) || {}),
     },
-    left: left ? <MainTextInput.Icon icon={left} /> : null,
-    right: right ? <MainTextInput.Icon icon={right} /> : null,
+    left: left ? (
+      <MainTextInput.Icon icon={left} size={scale(20)} color={Colors.grey} />
+    ) : null,
+    right: right ? (
+      <MainTextInput.Icon icon={right} size={scale(20)} color={Colors.grey} />
+    ) : null,
     textColor,
     placeholder: placeholder,
     placeholderTextColor: textColor,
     error,
-    className: `rounded-lg ${className}`,
+    className: `rounded-lg items-center justify-center mb-3 ${className}`,
     autoFocus,
     maxLength,
     ref,
@@ -136,7 +140,7 @@ export const TextInput = (props: TextInputPropsType) => {
     <>
       {props?.label && (
         <Text
-          className={`text-base text-gray-400 font-semibold mb-1 ${props?.labelStyle}`}
+          className={`text-base text-gray-600 font-semibold ${props?.labelStyle}`}
         >
           {props?.label}
         </Text>
@@ -169,8 +173,8 @@ export const PhoneNumberInput = (
     keyboardType: "phone-pad",
     left: () => (
       <MaterialIcons
-        name="phone" // icon name from MaterialIcons
-        size={props?.iconSize ?? 25} // you can still scale if needed
+        name="phone"
+        size={props?.iconSize ?? 20}
         color={Colors.grey}
       />
     ),
@@ -216,15 +220,6 @@ export const PasswordInput = (
   const result: TextInputPropsType = TextInputProps({
     ...props,
     placeholder: t(props?.placeholder ?? "Code PIN").toString(),
-
-    keyboardType: "numeric",
-    left: () => (
-      <MaterialIcons
-        name="lock-outline"
-        size={props?.iconSize ?? 25}
-        color={Colors.grey}
-      />
-    ),
     right: () => (
       <TouchableOpacity
         onPress={() => {
@@ -234,13 +229,13 @@ export const PasswordInput = (
         {visible ? (
           <MaterialIcons
             name="visibility-off"
-            size={scale(props?.iconSize ?? 25)}
+            size={scale(props?.iconSize ?? 20)}
             color={Colors.grey}
           />
         ) : (
           <MaterialIcons
             name="visibility"
-            size={scale(props?.iconSize ?? 25)}
+            size={scale(props?.iconSize ?? 20)}
             color={Colors.grey}
           />
         )}
@@ -254,16 +249,24 @@ export const PasswordInput = (
     secureTextEntry: !visible,
   });
 
+  delete result.label;
+
   return (
     <>
+      {props?.label && (
+        <Text
+          className={`text-base text-gray-600 font-semibold ${props?.labelStyle}`}
+        >
+          {props?.label}
+        </Text>
+      )}
       <MainTextInput
         {...result}
         onChangeText={(text: string) => {
-          const newValue = text.replace(/\D/g, "");
-          setInputValue(newValue);
+          // const newValue = text.replace(/\D/g, "");
+          setInputValue(text);
           props?.onChangeText && props?.onChangeText(text);
         }}
-        maxLength={4}
       />
 
       <ErrorMessage
@@ -373,13 +376,14 @@ export const ErrorMessage = ({
       type="error"
       visible={show}
       style={{
-        marginTop: -15,
+        marginTop: -8,
         marginBottom: 0,
         width: "100%",
-        fontSize: scale(14),
+        fontSize: scale(13),
+        color: Colors.darkBlack,
       }}
     >
-      {message && t(message).toString()}
+      {message && `* ${t(message).toString()}`}
     </HelperText>
   );
 };

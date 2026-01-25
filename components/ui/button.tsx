@@ -6,6 +6,9 @@ import { Button as MainButton } from "react-native-paper";
 export enum buttonMode {
   CONTAINED = "contained",
   OUTLINE = "outlined",
+  ELEVATED = "elevated",
+  TEXT = "text",
+  CONTAINED_TONAL = "contained-tonal",
 }
 
 const Button = ({
@@ -42,7 +45,7 @@ const Button = ({
       mode={mode}
       style={{
         marginBottom: 30,
-        borderRadius: 50,
+        borderRadius: 10,
         ...style,
       }}
       className={`${tranparent ? "bg-transparent" : "bg-[#77DD77]"} w-full ${className}`}
@@ -56,7 +59,7 @@ const Button = ({
       disabled={disabled}
       labelStyle={{ fontSize: 20, fontWeight: "bold", ...labelStyle }}
       icon={icon}
-      rippleColor={"#05b05b"}
+      // rippleColor={"#05b05b"}
     >
       {t(title)}
     </MainButton>
