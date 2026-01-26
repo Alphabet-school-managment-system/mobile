@@ -1,25 +1,29 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import "@/i18n";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
+import { PaperProvider } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
-import { useColorScheme } from "@/hooks/use-color-scheme";
-
-export const unstable_settings = {
-  anchor: "(tabs)",
-};
+import "../global.css";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const queryClient = new QueryClient();
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack />
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <PaperProvider>
+        <SafeAreaView
+          style={{
+            flex: 1,
+          }}
+        >
+          <QueryClientProvider client={queryClient}>
+            <Stack screenOptions={{ headerShown: false }} />
+          </QueryClientProvider>
+          <Toast />
+        </SafeAreaView>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }

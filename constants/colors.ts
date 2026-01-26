@@ -1,0 +1,17 @@
+export const Colors = {
+  darkGreen: "#034323",
+  lightGreen: "#77DD77",
+  extremLightGreen: "#F7FCFA",
+  extremLightGrey: "#F9FAFB",
+  extremLightGreySecond: "#E5E4E2",
+  lightGrey: "#E7E7E7",
+  darkBlack: "#353535",
+  white: "#FFF",
+  grey: "#9CA3AF",
+  yellow: "#FEB052",
+  darkRed: "#771D1D",
+  red: "#F04438",
+  textColor: "#374151",
+  blue: "#3b82f6",
+  purple: "#A80BB0",
+};
