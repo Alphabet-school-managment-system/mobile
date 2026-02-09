@@ -1,4 +1,9 @@
 {
-  "login": "Login",
-  "forgotPassword": "Forgot Password"
+  "Sign In": "Sign In",
+  "Login": "Login",
+  "Welcome to Alphabet SMS": "Welcome to Alphabet SMS",
+  "Please enter your credentials to continue.": "Please enter your credentials to continue.",
+  "Email address": "Email address",
+  "Password": "Password",
+  "Forgot Password ?": "Forgot Password ?"
 }

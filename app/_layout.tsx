@@ -5,6 +5,7 @@ import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
+import { UserProvider } from "@/store/userContext";
 import "../global.css";
 
 export default function RootLayout() {
@@ -19,7 +20,12 @@ export default function RootLayout() {
           }}
         >
           <QueryClientProvider client={queryClient}>
-            <Stack screenOptions={{ headerShown: false }} />
+            <UserProvider>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="(auth)" />
+                <Stack.Screen name="(app)" />
+              </Stack>
+            </UserProvider>
           </QueryClientProvider>
           <Toast />
         </SafeAreaView>

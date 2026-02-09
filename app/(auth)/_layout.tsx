@@ -1,5 +1,70 @@
-import { Stack } from "expo-router";
+import { Colors } from "@/constants/colors";
+import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
+import { router, Stack } from "expo-router";
+import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
+import { TouchableOpacity } from "react-native";
+
+const CustomHeaderOption = ({
+  title,
+  shown = true,
+  headerShown = true,
+}: {
+  title: string;
+  shown?: boolean;
+  headerShown?: boolean;
+}): ExtendedStackNavigationOptions => {
+  return {
+    title: title,
+    headerShown: headerShown,
+    headerTitleStyle: {
+      color: Colors.darkBlack,
+    },
+    headerTitleAlign: "center",
+    headerLeft: () => (
+      <TouchableOpacity
+        onPress={() => {
+          router.back();
+        }}
+      >
+        <MaterialDesignIcons
+          name="arrow-left"
+          size={24}
+          color={Colors.darkBlack}
+        />
+      </TouchableOpacity>
+    ),
+  };
+};
 
 export default function AuthLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <Stack>
+      <Stack.Screen
+        name="onBoarding"
+        options={{ title: "On Boarding", headerShown: false }}
+      />
+      <Stack.Screen
+        name="login"
+        options={{ title: "Login", headerShown: false }}
+      />
+      <Stack.Screen
+        name="forgetPassword"
+        options={{ title: "Forget Password", headerShown: false }}
+      />
+      <Stack.Screen
+        name="otp"
+        options={CustomHeaderOption({
+          title: "OTP Verification",
+          headerShown: false,
+        })}
+      />
+      <Stack.Screen
+        name="setNewPassword"
+        options={CustomHeaderOption({
+          title: "Set New Password",
+          shown: false,
+        })}
+      />
+    </Stack>
+  );
 }
