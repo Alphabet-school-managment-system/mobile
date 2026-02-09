@@ -1,17 +1,22 @@
 import { expoClient } from "@better-auth/expo/client";
+import { emailOTPClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import * as SecureStore from "expo-secure-store";
 import { fetch } from "expo/fetch";
 
 export const authClient = createAuthClient({
-  baseURL: "http://10.228.57.112:4000/api/auth",
+  baseURL: "https://neighbor-concern-replacement-utc.trycloudflare.com/",
   fetch,
+  fetchOptions: {
+    credentials: "include",
+  },
   plugins: [
     expoClient({
       scheme: "alphabet",
       storagePrefix: "alphabet",
       storage: SecureStore,
     }),
+    emailOTPClient(),
   ],
 });
 
@@ -27,4 +32,7 @@ export const {
   requestPasswordReset,
   verifyEmail,
   getSession,
+  resetPassword,
+  forgetPassword,
+  emailOtp,
 } = authClient;

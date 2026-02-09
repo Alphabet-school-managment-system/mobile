@@ -5,47 +5,87 @@ import { Colors } from "@/constants/colors";
 import { signIn } from "@/lib/auth-client";
 import { LoginForm, loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { router } from "expo-router";
+import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { KeyboardAvoidingView, TouchableOpacity, View } from "react-native";
-import { Avatar, Checkbox } from "react-native-paper";
+import { TouchableOpacity, View } from "react-native";
+import { Checkbox } from "react-native-paper";
+
+import { Index as Logo } from "@/components/ui/logo";
+import { UserContext, UserDataType } from "@/store/userContext";
+import Toast from "react-native-toast-message";
 
 export default function Index() {
   const [checked, setChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { setUserData } = useContext(UserContext);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: "surafelhabte1@gmail.com",
+      password: "Abcd@5304",
       rememberMe: checked,
     },
   });
 
-  const logo = require("@/assets/images/logo.png");
+  const handlelogin = async (values: any) => {
+    await signIn.email(
+      {
+        email: values.email,
+        password: values.password,
+        rememberMe: values.rememberMe,
+      },
+      {
+        onRequest: () => {
+          setLoading(true);
+        },
+        onError: (ctx) => {
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: ctx.error.message,
+          });
+          setLoading(false);
+        },
+        onSuccess: (context: any) => {
+          setUserData((prev: UserDataType) => ({
+            ...prev,
+            first_name: context?.data?.user?.name,
+            image: context?.data?.user?.image,
+            better_auth_userId: context?.data?.user?.id,
+            token: context?.data?.token,
+          }));
+
+          setTimeout(() => {
+            setLoading(false);
+            router.push("/(app)/(teacher)/dashboard");
+          }, 100);
+        },
+      },
+    );
+  };
 
   return (
     <View className="flex-1 px-5 justify-center rounded-3xl bg-white mx-4">
-      <View className="items-center mb-4">
-        <Avatar.Image
-          size={150}
-          source={logo}
-          style={{
-            borderColor: Colors.purple,
-            borderWidth: 2,
-          }}
-        />
-      </View>
-
+      <Logo />
       <View>
-        <Text className="font-extrabold text-purple-900" variant="displaySmall">
+        <Text
+          className="font-extrabold"
+          variant="displaySmall"
+          style={{ color: Colors.purple }}
+        >
           Sign In
         </Text>
-        <Text className=" text-purple-800 mt-2" variant="titleLarge">
+        <Text
+          className="mt-2"
+          variant="titleLarge"
+          style={{ color: Colors.purple }}
+        >
           Welcome to Alphabet SMS
         </Text>
         <Text className="text-gray-600 mt-2 mb-8" variant="titleMedium">
@@ -53,114 +93,77 @@ export default function Index() {
         </Text>
       </View>
 
-      <KeyboardAvoidingView>
-        <Controller
-          control={control}
-          name="email"
-          render={({ field }) => (
-            <TextInput
-              keyboardType="email-address"
-              placeholder="e.g.john.doe@example.com"
-              left={undefined}
-              value={field.value}
-              onChangeText={field.onChange}
-              error={!!errors.email}
-              errorMessage={errors?.email?.message}
-              label="Email address"
+      <Controller
+        control={control}
+        name="email"
+        render={({ field }) => (
+          <TextInput
+            keyboardType="email-address"
+            placeholder="e.g.john.doe@example.com"
+            left={undefined}
+            value={field.value}
+            onChangeText={field.onChange}
+            error={!!errors.email}
+            errorMessage={errors?.email?.message}
+            label="Email address"
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="password"
+        render={({ field }) => (
+          <PasswordInput
+            placeholder="Enter your password"
+            secureTextEntry={true}
+            value={field.value}
+            onChangeText={field.onChange}
+            error={!!errors.password}
+            errorMessage={errors?.password?.message}
+            style={{ marginBottom: 0 }}
+            label="Password"
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="rememberMe"
+        render={({ field }) => (
+          <View className="flex-row justify-between items-start">
+            <Checkbox.Item
+              label="Remember Me"
+              labelStyle={{ fontSize: 16 }}
+              position="leading"
+              labelVariant="labelLarge"
+              status={checked === true ? "checked" : "unchecked"}
+              onPress={() => {
+                setChecked(!checked);
+                field.onChange(!field.value);
+              }}
             />
-          )}
-        />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field }) => (
-            <PasswordInput
-              placeholder="Enter your password"
-              secureTextEntry={true}
-              value={field.value}
-              onChangeText={field.onChange}
-              error={!!errors.password}
-              errorMessage={errors?.password?.message}
-              style={{ marginBottom: 0 }}
-              label="Password"
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="rememberMe"
-          render={({ field }) => (
-            <View className="flex-row justify-between items-start">
-              <Checkbox.Item
-                label="Remember Me"
-                labelStyle={{ fontSize: 16 }}
-                position="leading"
-                labelVariant="labelLarge"
-                status={checked === true ? "checked" : "unchecked"}
-                onPress={() => {
-                  setChecked(!checked);
-                  field.onChange(!field.value);
-                }}
-              />
-            </View>
-          )}
-        />
+          </View>
+        )}
+      />
 
-        <Button
-          className="mt-4"
-          title="Login"
-          onPress={handleSubmit(
-            async (values) => {
-              const result: any = await signIn.email(
-                {
-                  email: values.email,
-                  password: values.password,
-                  rememberMe: values.rememberMe,
-                },
-                {
-                  onRequest: () => {
-                    // setLoading(true);
-                    console.log(
-                      "%capp/(auth)/login.tsx:123 request",
-                      "color: #007acc;",
-                    );
-                  },
-                  onError: (ctx) => {
-                    console.log(
-                      "%capp/(auth)/login.tsx:125 ctx",
-                      "color: #007acc;",
-                      ctx,
-                    );
-                    // toast.error(ctx.error.message);
-                    // setLoading(false);
-                  },
-                  onSuccess: (context: any) => {
-                    console.log(
-                      "%capp/(auth)/login.tsx:129 context",
-                      "color: #007acc;",
-                      context,
-                    );
-                    // setUserData({
-                    //   first_name: context?.user?.name,
-                    //   image: context?.user?.image,
-                    //   better_auth_userId: context?.user?.id,
-                    // });
-                    // setTimeout(() => {
-                    //   setLoading(false);
-                    //   router.push("/ws/dashboard");
-                    // }, 100);
-                  },
-                },
-              );
-            },
-            (errors) => {
-              console.log(errors);
-            },
-          )}
-        />
-      </KeyboardAvoidingView>
+      <Button
+        className="mt-4"
+        title="Login"
+        onPress={handleSubmit(
+          async (values) => {
+            handlelogin(values);
+          },
+          (errors) => {
+            console.log(errors);
+          },
+        )}
+        loading={loading}
+      />
       <View className="flex-row justify-center items-center mr-2">
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/forgetPassword");
+          }}
+        >
           <Text className="text-blue-500 text-base">Forgot Password ?</Text>
         </TouchableOpacity>
       </View>

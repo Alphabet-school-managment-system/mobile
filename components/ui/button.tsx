@@ -48,7 +48,7 @@ const Button = ({
         borderRadius: 10,
         ...style,
       }}
-      className={`${tranparent ? "bg-transparent" : "bg-[#77DD77]"} w-full ${className}`}
+      className={`${tranparent ? "!bg-transparent" : `!bg-[${Colors.purple}]`} w-full ${className}`}
       contentStyle={{
         height: 55,
         ...contentStyle,
