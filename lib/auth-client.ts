@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 import { fetch } from "expo/fetch";
 
 export const authClient = createAuthClient({
-  baseURL: "https://neighbor-concern-replacement-utc.trycloudflare.com/",
+  baseURL: "https://blonde-shuttle-stroke-chambers.trycloudflare.com/",
   fetch,
   fetchOptions: {
     credentials: "include",
