@@ -11,6 +11,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { onboardingSlides } from "../../data/OnboardingData";
 
@@ -22,6 +23,7 @@ const Index = () => {
   const [islastlastIndexReached, setislastlastIndexReached] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setUserData } = useContext(UserContext);
+  const { colors } = useTheme();
 
   const viewableItemsChanged = useRef(({ viewableItems }: any) => {
     setCurrentIndex(viewableItems[0]?.index ?? 0);
@@ -63,7 +65,7 @@ const Index = () => {
         <Text
           className={`text-[26px] !not-sr-onlyfont-extrabold text-center`}
           variant="headlineMedium"
-          style={{ fontWeight: "600", color: Colors.purple }}
+          style={{ fontWeight: "600", color: colors.primary }}
         >
           {item.title}
         </Text>
@@ -115,9 +117,8 @@ const Index = () => {
             {/* Button */}
             <Button
               onPress={scrollTo}
-              className={`${islastlastIndexReached ? "" : "!bg-gray-500/30"}`}
               title={islastlastIndexReached ? "Continue" : "Next"}
-              textColor={islastlastIndexReached ? Colors.white : Colors.white}
+              textColor={Colors.white}
               loading={loading}
             />
             {/* Pagination */}
@@ -142,7 +143,7 @@ const Index = () => {
                     style={{
                       width: dotWidth,
                       opacity: index === currentIndex ? 1 : 0.7,
-                      backgroundColor: Colors.purple,
+                      backgroundColor: colors.primary,
                     }}
                   />
                 );
