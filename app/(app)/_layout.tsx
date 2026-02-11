@@ -2,8 +2,6 @@ import { UserContext } from "@/store/userContext";
 import { Redirect, Stack } from "expo-router";
 import { useContext } from "react";
 
-const isLoggedIn = false;
-
 export default function AppLayout() {
   const { userData } = useContext(UserContext);
   if (!userData?.skipOnboarding) {

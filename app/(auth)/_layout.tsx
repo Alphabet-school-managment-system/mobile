@@ -4,14 +4,16 @@ import { router, Stack } from "expo-router";
 import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
 import { TouchableOpacity } from "react-native";
 
-const CustomHeaderOption = ({
+export const CustomHeaderOption = ({
   title,
-  shown = true,
   headerShown = true,
+  onBackPress,
+  backIcon,
 }: {
   title: string;
-  shown?: boolean;
   headerShown?: boolean;
+  onBackPress?: () => void;
+  backIcon?: React.ReactNode;
 }): ExtendedStackNavigationOptions => {
   return {
     title: title,
@@ -23,14 +25,22 @@ const CustomHeaderOption = ({
     headerLeft: () => (
       <TouchableOpacity
         onPress={() => {
-          router.back();
+          if (onBackPress) {
+            onBackPress();
+          } else {
+            router.back();
+          }
         }}
       >
-        <MaterialDesignIcons
-          name="arrow-left"
-          size={24}
-          color={Colors.darkBlack}
-        />
+        {backIcon ? (
+          backIcon
+        ) : (
+          <MaterialDesignIcons
+            name="arrow-left"
+            size={24}
+            color={Colors.darkBlack}
+          />
+        )}
       </TouchableOpacity>
     ),
   };
@@ -62,7 +72,7 @@ export default function AuthLayout() {
         name="setNewPassword"
         options={CustomHeaderOption({
           title: "Set New Password",
-          shown: false,
+          headerShown: false,
         })}
       />
     </Stack>

@@ -6,11 +6,7 @@ export default function Index() {
 
   return (
     <View className="flex-1 items-center justify-center">
-      <Text className="text-xl font-bold">Teacher Dashboard</Text>
-      {/* <Button
-        title="Open Drawer"
-        onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
-      /> */}
+      <Text className="text-xl font-bold">Teacher Profile</Text>
     </View>
   );
 }
