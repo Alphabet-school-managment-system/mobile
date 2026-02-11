@@ -7,6 +7,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { OtpInput } from "react-native-otp-entry";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 const formatTime = (s: number) => {
   const result = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -21,6 +22,7 @@ export default function OtpScreen() {
   const otpInputRef = useRef<any>(null);
   const [attempt, setAttempt] = useState(5);
   const [loading, setLoading] = useState(false);
+  const { colors } = useTheme();
 
   const { email: emailFromParams } = useLocalSearchParams();
 
@@ -101,7 +103,7 @@ export default function OtpScreen() {
         <Text
           className="mt-2"
           variant="titleLarge"
-          style={{ color: Colors.purple }}
+          style={{ color: colors.primary }}
         >
           Verify Your Email
         </Text>

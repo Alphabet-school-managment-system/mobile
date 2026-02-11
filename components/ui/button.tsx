@@ -1,7 +1,7 @@
 import { Colors } from "@/constants/colors";
 import { useTranslation } from "react-i18next";
 import { TextStyle, ViewStyle } from "react-native";
-import { Button as MainButton } from "react-native-paper";
+import { Button as MainButton, useTheme } from "react-native-paper";
 
 export enum buttonMode {
   CONTAINED = "contained",
@@ -39,6 +39,7 @@ const Button = ({
   tranparent?: boolean;
 }) => {
   const { t } = useTranslation();
+  const { colors } = useTheme();
 
   return (
     <MainButton
@@ -48,7 +49,7 @@ const Button = ({
         borderRadius: 10,
         ...style,
       }}
-      className={`${tranparent ? "!bg-transparent" : `!bg-[${Colors.purple}]`} w-full ${className}`}
+      className={`${tranparent ? "!bg-transparent" : `!bg-[${colors.primary}]`} w-full ${className}`}
       contentStyle={{
         height: 55,
         ...contentStyle,

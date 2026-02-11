@@ -2,7 +2,6 @@ import Button from "@/components/ui/button";
 import { Index as Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
 import { TextInput } from "@/components/ui/textinput";
-import { Colors } from "@/constants/colors";
 import { forgetPassword } from "@/lib/auth-client";
 import { forgetPasswordForm, forgetPasswordSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,10 +9,13 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Index() {
   const [loading, setLoading] = useState(false);
+
+  const { colors } = useTheme();
 
   const {
     control,
@@ -78,7 +80,7 @@ export default function Index() {
         <Text
           className="font-extrabold"
           variant="titleLarge"
-          style={{ color: Colors.purple }}
+          style={{ color: colors.primary }}
         >
           Forgot Password
         </Text>

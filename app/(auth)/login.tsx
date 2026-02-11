@@ -1,7 +1,6 @@
 import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { PasswordInput, TextInput } from "@/components/ui/textinput";
-import { Colors } from "@/constants/colors";
 import { signIn } from "@/lib/auth-client";
 import { LoginForm, loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +8,7 @@ import { router } from "expo-router";
 import { useContext, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
-import { Checkbox } from "react-native-paper";
+import { Checkbox, useTheme } from "react-native-paper";
 
 import { Index as Logo } from "@/components/ui/logo";
 import { UserContext, UserDataType } from "@/store/userContext";
@@ -19,6 +18,7 @@ export default function Index() {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   const { setUserData } = useContext(UserContext);
+  const { colors } = useTheme();
 
   const {
     control,
@@ -77,14 +77,14 @@ export default function Index() {
         <Text
           className="font-extrabold"
           variant="displaySmall"
-          style={{ color: Colors.purple }}
+          style={{ color: colors.primary }}
         >
-          Sign In
+          Log In
         </Text>
         <Text
           className="mt-2"
           variant="titleLarge"
-          style={{ color: Colors.purple }}
+          style={{ color: colors.primary }}
         >
           Welcome to Alphabet SMS
         </Text>
