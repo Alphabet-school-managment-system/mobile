@@ -2,7 +2,7 @@ import { isTranslationKeyValid } from "@/i18n/translationUtil";
 import { ReactNode, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleProp, Text, TextStyle } from "react-native";
-type TextVariant =
+export type TextVariant =
   | "displayLarge"
   | "displayMedium"
   | "displaySmall"
@@ -41,7 +41,7 @@ const CustomText = ({
       return;
     }
     if (!isTranslationKeyValid(children)) {
-      console.warn(`Translation key "${children}" not found in en.json`);
+      // console.warn(`Translation key "${children}" not found in en.json`);
     }
   }, [disableTranslation, children]);
 
@@ -68,7 +68,7 @@ const CustomText = ({
   return (
     <Text
       style={[variantStyles[appliedVariant], style]}
-      className={`text-black ${className}`}
+      className={`${className}`}
       onPress={onPress}
     >
       {disableTranslation ? children : t(children?.toString() ?? "")}

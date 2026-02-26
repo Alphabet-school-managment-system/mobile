@@ -1,6 +1,8 @@
 import { CustomHeaderOption } from "@/app/(auth)/_layout";
+import { UtilContext } from "@/store/utilContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack } from "expo-router";
+import { useContext } from "react";
 
 export default function OfficeLayout() {
   const backIcon = (
@@ -8,6 +10,8 @@ export default function OfficeLayout() {
   );
 
   const backRoute = "/(app)/(teacher)/office";
+
+  const { Util } = useContext(UtilContext);
 
   return (
     <Stack screenOptions={{ headerShown: true }}>
@@ -23,13 +27,24 @@ export default function OfficeLayout() {
         })}
       />
       <Stack.Screen
-        name="newLeaveRequest"
+        name="leaveRequestForm"
         options={CustomHeaderOption({
           backIcon: backIcon,
-          title: "New Leave Request",
+          title: Util.routeTitle ?? "New Leave Request",
           headerShown: true,
           onBackPress: () => {
             router.replace(backRoute);
+          },
+        })}
+      />
+      <Stack.Screen
+        name="leaveRequestDetail"
+        options={CustomHeaderOption({
+          backIcon: backIcon,
+          title: "Leave Request Detail",
+          headerShown: true,
+          onBackPress: () => {
+            router.replace("/(app)/(office)/myLeaveRequest");
           },
         })}
       />

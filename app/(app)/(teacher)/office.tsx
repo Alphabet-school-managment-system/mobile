@@ -9,7 +9,7 @@ export default function Index() {
     {
       icon: <Ionicons name="create-outline" size={30} color="white" />,
       title: "New leave request",
-      route: "/(app)/(office)/newLeaveRequest",
+      route: "/(app)/(office)/leaveRequestForm",
     },
     {
       icon: (

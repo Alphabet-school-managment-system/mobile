@@ -8,6 +8,7 @@ import {
   Animated,
   FlatList,
   Image,
+  TouchableOpacity,
   useWindowDimensions,
   View,
 } from "react-native";
@@ -42,7 +43,7 @@ const Index = () => {
 
       setTimeout(() => {
         setLoading(false);
-        router.push("/login");
+        router.push("/whoAreYou");
       }, 500);
     }
   };
@@ -114,13 +115,6 @@ const Index = () => {
         <View className="h-1/4 justify-center">
           {/* Footer */}
           <View className=" w-full px-6">
-            {/* Button */}
-            <Button
-              onPress={scrollTo}
-              title={islastlastIndexReached ? "Continue" : "Next"}
-              textColor={Colors.white}
-              loading={loading}
-            />
             {/* Pagination */}
             <View className="flex-row justify-center mb-6">
               {onboardingSlides.map((_, index) => {
@@ -149,6 +143,29 @@ const Index = () => {
                 );
               })}
             </View>
+            {/* Button */}
+            <Button
+              onPress={scrollTo}
+              title={islastlastIndexReached ? "Continue" : "Next"}
+              textColor={Colors.white}
+              loading={loading}
+            />
+
+            <TouchableOpacity>
+              <Text
+                className="text-center text-gray-500"
+                variant="titleLarge"
+                onPress={() => {
+                  setUserData((prev: UserDataType) => ({
+                    ...prev,
+                    skipOnboarding: true,
+                  }));
+                  router.push("/whoAreYou");
+                }}
+              >
+                Skip
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

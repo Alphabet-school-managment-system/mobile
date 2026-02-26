@@ -128,6 +128,10 @@ export const TextInput = (props: TextInputPropsType) => {
   const [inputValue, setInputValue] = useState(props?.value);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    setInputValue(props?.value);
+  }, [props?.value]);
+
   const result: TextInputPropsType = TextInputProps({
     ...props,
     value: inputValue,
@@ -289,7 +293,7 @@ export const DatePicker = ({
 }: {
   label?: string;
   value: Date;
-  onChange: (value: string) => void;
+  onChange: (value: Date) => void;
   placeholder?: string;
   containerStyle?: string;
   labelStyle?: string;
@@ -313,13 +317,13 @@ export const DatePicker = ({
     <>
       {label && (
         <Text
-          className={`text-base text-gray-400 font-semibold mb-1 ${labelStyle}`}
+          className={`text-base text-gray-600 font-semibold mb-1 ${labelStyle}`}
         >
           {label}
         </Text>
       )}
       <TouchableOpacity
-        className={`w-full items-center border mt-2.5 rounded-lg h-12 px-2.5 flex flex-row justify-between ${containerStyle}`}
+        className={`w-full items-center border mt-2.5 rounded-lg h-12 px-2.5 flex flex-row justify-between ${errorMessage ? "mb-2" : "mb-1"} ${containerStyle}`}
         onPress={() => {
           setOpen(true);
         }}
@@ -344,17 +348,16 @@ export const DatePicker = ({
       </TouchableOpacity>
       <ErrorMessage message={errorMessage && errorMessage} show={error} />
       <DatePickerModal
-        locale="fr"
+        locale="en"
         mode="single"
         visible={open}
         onDismiss={() => setOpen(false)}
         date={value}
-        onConfirm={() => {
+        onConfirm={({ date: selectedDate }) => {
           setOpen(false);
-        }}
-        onChange={(value: any) => {
-          onChange(dayjs(value.date).format("YYYY-MM-DD"));
-          setDate(dayjs(value.date).format("DD/MM/YYYY"));
+          if (!selectedDate) return;
+          onChange(selectedDate);
+          setDate(dayjs(selectedDate).format("DD/MM/YYYY"));
         }}
         validRange={validDateRange}
       />
