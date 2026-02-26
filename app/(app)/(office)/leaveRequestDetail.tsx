@@ -1,13 +1,13 @@
 import Button, { buttonMode } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { statusStyles } from "@/constants/status";
+import { StatusIndicator } from "@/constants/status";
 import { useApiMutation } from "@/hooks/useApi";
 import { LeaveRequest } from "@/models";
 import { ModalContext, ModalPropsType } from "@/store/modalContext";
 import { UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
 import { router, useLocalSearchParams } from "expo-router";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { Alert, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
@@ -19,6 +19,7 @@ export default function Index() {
   const { colors } = useTheme();
   const { Util, setUtil } = useContext(UtilContext);
   const { setModalProps } = useContext(ModalContext);
+  const [loading, setLoading] = useState(false);
 
   const parsedData = useMemo<LeaveRequest | undefined>(
     () =>
@@ -30,7 +31,7 @@ export default function Index() {
 
   const { mutate: cancelRequest, isPending: isCanceling } = useApiMutation(
     [apiRoute],
-    `${apiRoute}/${parsedData?.id}`,
+    `${apiRoute}/${parsedData?.id}/delete`,
     "DELETE",
   );
 
@@ -39,9 +40,7 @@ export default function Index() {
     [stringfiedData],
   );
 
-  const statusKey = (leaveRequest?.status || "Pending").toLowerCase();
-  const statusStyle = statusStyles[statusKey] || statusStyles.pending;
-  const canModify = statusKey === "pending";
+  const canModify = leaveRequest?.status.toLowerCase() === "pending";
 
   const handleEdit = () => {
     if (!canModify) return;
@@ -66,11 +65,16 @@ export default function Index() {
           text: "Yes",
           style: "destructive",
           onPress: () => {
+            setLoading(true);
             cancelRequest(
               { body: {} },
               {
                 onSuccess: () => {
+                  setLoading(false);
                   router.replace("/(app)/(office)/myLeaveRequest");
+                },
+                onError: () => {
+                  setLoading(false);
                 },
               },
             );
@@ -83,10 +87,10 @@ export default function Index() {
   useEffect(() => {
     setModalProps((prev: ModalPropsType) => ({
       ...prev,
-      show: isCanceling,
-      loadingText: "Canceling ...",
+      show: loading,
+      loadingText: loading ? "Canceling ..." : "Loading...",
     }));
-  }, [isCanceling]);
+  }, [loading]);
 
   return (
     <View className="flex-1 bg-white">
@@ -107,13 +111,7 @@ export default function Index() {
               <Text className="text-white font-bold" variant="titleLarge">
                 Status
               </Text>
-              <View className={`px-2 py-1 rounded-full ${statusStyle.bg}`}>
-                <Text
-                  className={`text-xs font-semibold uppercase ${statusStyle.text}`}
-                >
-                  {leaveRequest?.status || "Pending"}
-                </Text>
-              </View>
+              <StatusIndicator status={leaveRequest?.status} />
             </View>
 
             <View className="mb-4">

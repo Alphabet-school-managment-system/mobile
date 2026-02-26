@@ -68,7 +68,7 @@ const CustomText = ({
   return (
     <Text
       style={[variantStyles[appliedVariant], style]}
-      className={`text-black ${className}`}
+      className={`${className}`}
       onPress={onPress}
     >
       {disableTranslation ? children : t(children?.toString() ?? "")}

@@ -1,6 +1,6 @@
 import FlatList from "@/components/flatList";
 import { Text } from "@/components/ui/text";
-import { statusStyles } from "@/constants/status";
+import { StatusIndicator } from "@/constants/status";
 import { LeaveRequest } from "@/models";
 import { UserContext } from "@/store/userContext";
 import { defaultUtilProps, UtilContext } from "@/store/utilContext";
@@ -15,8 +15,6 @@ type LeaveRequestItemProps = {
 };
 
 function LeaveRequestItem({ item }: LeaveRequestItemProps) {
-  const statusKey = (item.status || "Pending").toLowerCase();
-  const style = statusStyles[statusKey] || statusStyles.pending;
   const { colors } = useTheme();
 
   return (
@@ -37,13 +35,7 @@ function LeaveRequestItem({ item }: LeaveRequestItemProps) {
           {`${dayjs(item.start_date).format("MMM D, YYYY")} - ${item.end_date ? dayjs(item.end_date).format("MMM D, YYYY") : "Same Date"}`}
         </Text>
 
-        <View className="flex-row items-center">
-          <View className={`px-2 py-1 rounded-full ${style.bg}`}>
-            <Text className={`text-xs font-semibold uppercase ${style.text}`}>
-              {item.status || "Pending"}
-            </Text>
-          </View>
-        </View>
+        <StatusIndicator status={item.status} />
       </View>
     </TouchableOpacity>
   );

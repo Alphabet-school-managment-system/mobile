@@ -293,7 +293,7 @@ export const DatePicker = ({
 }: {
   label?: string;
   value: Date;
-  onChange: (value: string) => void;
+  onChange: (value: Date) => void;
   placeholder?: string;
   containerStyle?: string;
   labelStyle?: string;
@@ -353,12 +353,11 @@ export const DatePicker = ({
         visible={open}
         onDismiss={() => setOpen(false)}
         date={value}
-        onConfirm={() => {
+        onConfirm={({ date: selectedDate }) => {
           setOpen(false);
-        }}
-        onChange={(value: any) => {
-          onChange(dayjs(value.date).format("YYYY-MM-DD"));
-          setDate(dayjs(value.date).format("DD/MM/YYYY"));
+          if (!selectedDate) return;
+          onChange(selectedDate);
+          setDate(dayjs(selectedDate).format("DD/MM/YYYY"));
         }}
         validRange={validDateRange}
       />

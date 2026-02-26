@@ -60,7 +60,15 @@ export default function Index() {
 
   const handleFormSubmit = async (values: any) => {
     try {
-      const payload = { ...values };
+      const payload = {
+        ...values,
+        start_date: values?.start_date
+          ? dayjs(values.start_date).format("YYYY-MM-DD")
+          : null,
+        end_date: values?.end_date
+          ? dayjs(values.end_date).format("YYYY-MM-DD")
+          : null,
+      };
 
       await mutate(
         { body: payload },
@@ -88,12 +96,6 @@ export default function Index() {
 
   useEffect(() => {
     if (!parsedData) return;
-    console.log(
-      "%capp/(app)/(office)/leaveRequestForm.tsx:91 parsedData",
-      "color: #007acc;",
-      parsedData,
-    );
-
     reset({
       academic_year_id:
         parsedData?.academic_year_id || Ids?.academicYearId || "",

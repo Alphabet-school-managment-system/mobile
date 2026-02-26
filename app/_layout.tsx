@@ -2,6 +2,7 @@ import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
+import { en, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
@@ -15,6 +16,7 @@ import { UtilProvider } from "@/store/utilContext";
 import "../global.css";
 
 const queryClient = new QueryClient();
+registerTranslation("en", en);
 
 export default function RootLayout() {
   useReactQueryDevTools(queryClient);
