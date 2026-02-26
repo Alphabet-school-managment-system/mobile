@@ -2,33 +2,43 @@ import "@/i18n";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
+import { IdsProvider } from "@/store/idsContext";
 import { UserProvider } from "@/store/userContext";
+import { useReactQueryDevTools } from "@dev-plugins/react-query";
+
+import { Index as Modal } from "@/components/modal";
+import { ConfirmationModalProvider, ModalProvider } from "@/store/modalContext";
+import { UtilProvider } from "@/store/utilContext";
 import "../global.css";
 
-export default function RootLayout() {
-  const queryClient = new QueryClient();
+const queryClient = new QueryClient();
 
+export default function RootLayout() {
+  useReactQueryDevTools(queryClient);
   return (
     <SafeAreaProvider>
       <PaperProvider>
-        <SafeAreaView
-          style={{
-            flex: 1,
-          }}
-        >
-          <QueryClientProvider client={queryClient}>
-            <UserProvider>
-              <Stack screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="(auth)" />
-                <Stack.Screen name="(app)" />
-              </Stack>
-            </UserProvider>
-          </QueryClientProvider>
-          <Toast />
-        </SafeAreaView>
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>
+            <IdsProvider>
+              <ConfirmationModalProvider>
+                <ModalProvider>
+                  <UtilProvider>
+                    <Stack screenOptions={{ headerShown: false }}>
+                      <Stack.Screen name="(auth)" />
+                      <Stack.Screen name="(app)" />
+                    </Stack>
+                  </UtilProvider>
+                  <Modal />
+                </ModalProvider>
+              </ConfirmationModalProvider>
+            </IdsProvider>
+          </UserProvider>
+        </QueryClientProvider>
+        <Toast />
       </PaperProvider>
     </SafeAreaProvider>
   );

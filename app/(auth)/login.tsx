@@ -5,20 +5,34 @@ import { signIn } from "@/lib/auth-client";
 import { LoginForm, loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, View } from "react-native";
 import { Checkbox, useTheme } from "react-native-paper";
 
 import { Index as Logo } from "@/components/ui/logo";
+import { useApiQuery } from "@/hooks/useApi";
+import { IdsContext } from "@/store/idsContext";
+import {
+  defaultModalProps,
+  ModalContext,
+  ModalPropsType,
+} from "@/store/modalContext";
 import { UserContext, UserDataType } from "@/store/userContext";
 import Toast from "react-native-toast-message";
 
 export default function Index() {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { setUserData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
+  const [getIds, setGetIds] = useState(false);
+  const { setIds } = useContext(IdsContext);
+  const { setModalProps } = useContext(ModalContext);
+
   const { colors } = useTheme();
+  const apiEndpoint = {
+    getIds: `${userData?.role}/getIds/${userData?.better_auth_userId}`,
+  };
 
   const {
     control,
@@ -27,11 +41,42 @@ export default function Index() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "surafelhabte1@gmail.com",
+      email: "surafelteacher@gmail.com",
       password: "Abcd@5304",
       rememberMe: checked,
     },
   });
+
+  const {
+    data: ids,
+    isLoading: isGettingIds,
+    refetch,
+  } = useApiQuery<any>([apiEndpoint.getIds], apiEndpoint.getIds, false);
+
+  useEffect(() => {
+    if (getIds === true && userData?.better_auth_userId) {
+      refetch();
+    }
+  }, [getIds]);
+
+  useEffect(() => {
+    if (ids) {
+      setIds({
+        branchId: ids?.branch?.id,
+        branchName: ids?.branch?.name,
+        academicYearId: ids?.academic_year?.id,
+      });
+      setUserData((prev: UserDataType) => ({
+        ...prev,
+        id: ids?.user?.id,
+        token: ids?.token,
+      }));
+      setTimeout(() => {
+        setLoading(false);
+        router.push("/(app)/(teacher)/dashboard");
+      }, 100);
+    }
+  }, [ids]);
 
   const handlelogin = async (values: any) => {
     await signIn.email(
@@ -58,17 +103,20 @@ export default function Index() {
             first_name: context?.data?.user?.name,
             image: context?.data?.user?.image,
             better_auth_userId: context?.data?.user?.id,
-            token: context?.data?.token,
+            better_auth_token: context?.data?.token,
           }));
-
-          setTimeout(() => {
-            setLoading(false);
-            router.push("/(app)/(teacher)/dashboard");
-          }, 100);
+          setGetIds(true);
         },
       },
     );
   };
+
+  useEffect(() => {
+    setModalProps((prev: ModalPropsType) => ({
+      ...defaultModalProps,
+      show: loading || isGettingIds,
+    }));
+  }, [loading, isGettingIds]);
 
   return (
     <View className="flex-1 px-5 justify-center rounded-3xl bg-white mx-4">
@@ -156,7 +204,6 @@ export default function Index() {
             console.log(errors);
           },
         )}
-        loading={loading}
       />
       <View className="flex-row justify-center items-center mr-2">
         <TouchableOpacity

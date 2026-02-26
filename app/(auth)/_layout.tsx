@@ -54,6 +54,11 @@ export default function AuthLayout() {
         options={{ title: "On Boarding", headerShown: false }}
       />
       <Stack.Screen
+        name="whoAreYou"
+        options={{ title: "Who Are You", headerShown: false }}
+      />
+
+      <Stack.Screen
         name="login"
         options={{ title: "Login", headerShown: false }}
       />

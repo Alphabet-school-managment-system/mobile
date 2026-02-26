@@ -1,13 +1,16 @@
-import { getData, postData } from "@/services/api";
+import { useApi } from "@/services/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import Toast from "react-native-toast-message";
 
 export const useApiQuery = <T>(
   key: string[],
   url: string,
   enabled: boolean = true,
-) =>
-  useQuery<T>({
+) => {
+  const { getData } = useApi();
+
+  return useQuery<T>({
     queryKey: key,
     queryFn: ({ signal }) => getData<T>(url, signal),
     enabled,
@@ -21,12 +24,14 @@ export const useApiQuery = <T>(
       },
     },
   });
+};
 
 export const useApiMutation = <T>(
   keyToInvalidate: string[],
   url: string,
   method: "POST" | "PUT" | "DELETE" = "POST",
 ) => {
+  const { postData } = useApi();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -49,11 +54,16 @@ export const useApiMutation = <T>(
             : "Data saved successfully."),
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       Toast.show({
         type: "error",
         text1: "Error",
-        text2: error instanceof Error ? error.message : "An error occurred",
+        text2:
+          error instanceof Error
+            ? error.message
+            : axios.isAxiosError(error)
+              ? error.response?.data
+              : "An error occurred",
       });
     },
   });

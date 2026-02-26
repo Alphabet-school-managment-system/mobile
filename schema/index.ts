@@ -21,3 +21,14 @@ export const setNewPasswordSchema = z.object({
 });
 
 export type SetNewPasswordForm = z.infer<typeof setNewPasswordSchema>;
+
+export const leaveRequestFormSchema = z.object({
+  academic_year_id: z.string().uuid(),
+  student_id: z.string().uuid().nullable().optional(),
+  teacher_id: z.string().uuid().nullable().optional(),
+  start_date: z.date().nullable().optional(),
+  end_date: z.date().nullable().optional(),
+  note: z.string().nullable().optional(),
+});
+
+export type LeaveRequestForm = z.infer<typeof leaveRequestFormSchema>;

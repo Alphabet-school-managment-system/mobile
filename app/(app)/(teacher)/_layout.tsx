@@ -55,7 +55,7 @@ export default function TeacherLayout() {
       <Drawer.Screen
         name="office"
         options={{
-          title: "Office",
+          title: "Self Service",
           drawerIcon: ({ size, color }) => (
             <Ionicons name="briefcase-outline" size={size} color={color} />
           ),

@@ -2,16 +2,17 @@
 import React, { createContext, useState, type ReactNode } from "react";
 
 export type UserDataType = {
-  _id?: string;
+  id?: string;
   first_name?: string;
   last_name?: string;
   phoneNumber?: string;
   email?: string;
-  role?: string;
-  token?: string;
+  role: "student" | "teacher" | "parent";
+  better_auth_token?: string;
   better_auth_userId?: string;
   image?: string | null;
   skipOnboarding?: boolean;
+  token?: string;
 };
 
 export type AppData = {
@@ -32,16 +33,17 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [userData, setUserData] = useState<UserDataType>({
-    _id: undefined,
+    id: undefined,
     first_name: undefined,
     last_name: undefined,
     phoneNumber: undefined,
     email: undefined,
-    role: undefined,
-    token: undefined,
+    role: "student",
+    better_auth_token: undefined,
     better_auth_userId: undefined,
     image: undefined,
     skipOnboarding: false,
+    token: undefined,
   });
 
   return (

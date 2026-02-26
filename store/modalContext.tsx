@@ -7,6 +7,7 @@ import React, {
   type ReactNode,
 } from "react";
 
+// confirmation modal
 export type ConfirmationModalPropsType = {
   show?: boolean;
   title?: string;
@@ -62,5 +63,64 @@ export const ConfirmationModalProvider: React.FC<{ children: ReactNode }> = ({
     >
       {children}
     </ConfirmationModalContext.Provider>
+  );
+};
+
+// normal modal
+export type ModalPropsType = {
+  showLoadingSpin?: boolean;
+  loadingText?: string;
+  content?: string | ReactElement;
+  show: boolean;
+  header?: {
+    show?: boolean;
+    title?: string;
+  };
+  animationType?: "fade" | "slide" | "none";
+};
+
+export type ModalContextType = {
+  ModalProps: ModalPropsType;
+  setModalProps: React.Dispatch<React.SetStateAction<ModalPropsType>>;
+};
+
+export const ModalContext = createContext<ModalContextType>({
+  ModalProps: {
+    showLoadingSpin: true,
+    loadingText: "Loading...",
+    content: undefined,
+    show: false,
+    header: {
+      show: false,
+      title: undefined,
+    },
+    animationType: "none",
+  },
+  setModalProps: () => {},
+});
+
+export const defaultModalProps: ModalPropsType = {
+  showLoadingSpin: true,
+  loadingText: "Loading...",
+  content: undefined,
+  show: false,
+  header: {
+    show: false,
+    title: undefined,
+  },
+  animationType: "none",
+};
+
+export const ModalProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
+  const [ModalProps, setModalProps] = useState<ModalPropsType>({
+    ...defaultModalProps,
+  });
+
+  return (
+    <ModalContext.Provider value={{ ModalProps, setModalProps }}>
+      {children}
+    </ModalContext.Provider>
   );
 };

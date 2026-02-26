@@ -1,46 +1,52 @@
-export const apiEndpoint: string = "http://localhost:4000/api/v1";
+import { UserContext } from "@/store/userContext";
 import axios, { AxiosRequestConfig } from "axios";
-const token = process.env.NEXT_PUBLIC_API_TOKEN || null;
+import { useContext } from "react";
 
-export const apiRequest = async <T>(
-  url: string,
-  options?: AxiosRequestConfig
-): Promise<T> => {
-  try {
+const API_BASE_URL = (
+  process.env.EXPO_PUBLIC_API_ENDPOINT ||
+  "https://wild-joan-bring-days.trycloudflare.com"
+).replace(/\/+$/, "");
+
+export const apiEndpoint: string = `${API_BASE_URL}/api/v1`;
+
+export const useApi = () => {
+  const { userData } = useContext(UserContext);
+
+  const apiRequest = async <T>(
+    url: string,
+    options?: AxiosRequestConfig,
+  ): Promise<T> => {
+    const normalizedUrl = url.replace(/^\/+/, "");
+
     const response = await axios({
-      url: `${apiEndpoint}/${url}`,
+      url: `${apiEndpoint}/${normalizedUrl}`,
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(userData?.token
+          ? { Authorization: `Bearer ${userData.token}` }
+          : {}),
         ...options?.headers,
       },
       ...options,
     });
 
     return response.data as T;
-  } catch (error: any) {
-    if (error.response) {
-      throw new Error(
-        error.response.data?.message ||
-          error.response.data?.error ||
-          "Backend error occurred"
-      );
-    } else {
-      throw new Error(error.message);
-    }
-  }
+  };
+
+  const getData = <T>(url: string, signal?: AbortSignal) =>
+    apiRequest<T>(url, { signal });
+
+  const postData = <T>(
+    url: string,
+    body: unknown,
+    method = "POST",
+    signal?: AbortSignal,
+  ) =>
+    apiRequest<T>(url, {
+      method,
+      data: JSON.stringify(body, (_, v) => (v === undefined ? null : v)),
+      signal,
+    });
+
+  return { getData, postData, apiRequest };
 };
-
-export const getData = <T>(url: string, signal?: AbortSignal) =>
-  apiRequest<T>(url, { signal });
-
-export const postData = <T>(
-  url: string,
-  body: unknown,
-  method = "POST",
-  signal?: AbortSignal
-) => apiRequest<T>(url, {
-    method,
-    data: JSON.stringify(body, (_, v) => (v === undefined ? null : v)),
-    signal,
-  });
