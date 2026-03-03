@@ -17,12 +17,12 @@ export const StatusIndicator = ({ status }: { status?: string }) => {
   return (
     <View className="flex-row items-center">
       <View
-        className="px-2 py-1 rounded-full"
-        style={{ backgroundColor: style.bgColor }}
+        className="rounded-lg"
+        style={{ backgroundColor: style.bgColor, padding: 6 }}
       >
         <Text
-          className="text-xs font-semibold uppercase"
-          style={{ color: style.textColor }}
+          className="text-xs font-semibold w-full"
+          style={{ color: style.textColor, textTransform: "uppercase" }}
         >
           {status || "Pending"}
         </Text>

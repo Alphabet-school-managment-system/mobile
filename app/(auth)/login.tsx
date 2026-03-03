@@ -41,7 +41,7 @@ export default function Index() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "surafelteacher@gmail.com",
+      email: "surafelhabte92@gmail.com",
       password: "Abcd@5304",
       rememberMe: checked,
     },
