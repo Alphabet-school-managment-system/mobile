@@ -6,13 +6,12 @@ import { en, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
-import { IdsProvider } from "@/store/idsContext";
-import { UserProvider } from "@/store/userContext";
-import { useReactQueryDevTools } from "@dev-plugins/react-query";
-
 import { Index as Modal } from "@/components/modal";
+import { IdsProvider } from "@/store/idsContext";
 import { ConfirmationModalProvider, ModalProvider } from "@/store/modalContext";
+import { UserProvider } from "@/store/userContext";
 import { UtilProvider } from "@/store/utilContext";
+import { useReactQueryDevTools } from "@dev-plugins/react-query";
 import "../global.css";
 
 const queryClient = new QueryClient();

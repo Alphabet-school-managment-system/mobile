@@ -1,14 +1,20 @@
+import { Index as ConfirmationModal } from "@/components/confirmationModal";
 import Button, { buttonMode } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { StatusIndicator } from "@/constants/status";
 import { useApiMutation } from "@/hooks/useApi";
 import { LeaveRequest } from "@/models";
-import { ModalContext, ModalPropsType } from "@/store/modalContext";
+import {
+  ConfirmationModalContext,
+  defaultModalProps,
+  ModalContext,
+  ModalPropsType,
+} from "@/store/modalContext";
 import { UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
 import { router, useLocalSearchParams } from "expo-router";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
 export default function Index() {
@@ -19,6 +25,8 @@ export default function Index() {
   const { colors } = useTheme();
   const { Util, setUtil } = useContext(UtilContext);
   const { setModalProps } = useContext(ModalContext);
+  const { setConfirmationModalProps } = useContext(ConfirmationModalContext);
+
   const [loading, setLoading] = useState(false);
 
   const parsedData = useMemo<LeaveRequest | undefined>(
@@ -56,38 +64,50 @@ export default function Index() {
 
   const handleCancel = () => {
     if (!canModify) return;
-    Alert.alert(
-      "Cancel leave request",
-      "Are you sure you want to cancel this leave request?",
-      [
-        { text: "No", style: "cancel" },
-        {
-          text: "Yes",
-          style: "destructive",
-          onPress: () => {
-            setLoading(true);
-            cancelRequest(
-              { body: {} },
-              {
-                onSuccess: () => {
-                  setLoading(false);
-                  router.replace("/(app)/(office)/myLeaveRequest");
-                },
-                onError: () => {
-                  setLoading(false);
-                },
-              },
-            );
+
+    setConfirmationModalProps((prev) => ({
+      ...prev,
+      show: true,
+      title: "Confirmation",
+      content: "Are you sure you want to cancel this leave request?",
+      okButtonText: "Yes, cancel",
+      cancelButtonText: "No",
+      onOk: () => {
+        setLoading(true);
+        cancelRequest(
+          { body: {} },
+          {
+            onSuccess: () => {
+              setLoading(false);
+              router.replace("/(app)/(office)/myLeaveRequest");
+            },
+            onError: () => {
+              setLoading(false);
+            },
           },
-        },
-      ],
-    );
+        );
+      },
+      onCancel: () => {
+        setModalProps((prev: ModalPropsType) => ({
+          ...defaultModalProps,
+          content: <ConfirmationModal />,
+          show: false,
+        }));
+      },
+    }));
+
+    setModalProps((prev: ModalPropsType) => ({
+      ...defaultModalProps,
+      content: <ConfirmationModal />,
+      show: true,
+    }));
   };
 
   useEffect(() => {
     setModalProps((prev: ModalPropsType) => ({
       ...prev,
       show: loading,
+      content: undefined,
       loadingText: loading ? "Canceling ..." : "Loading...",
     }));
   }, [loading]);
