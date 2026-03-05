@@ -220,6 +220,7 @@ export interface Student {
   phone: string;
   note?: string | null;
   image: string;
+  student_registration_number?: number;
 }
 
 export interface Teacher {
@@ -234,6 +235,7 @@ export interface Teacher {
   note?: string | null;
   image: string;
   branch_id: string;
+  teacher_registration_number: number;
 }
 
 export interface StudentMarkSummary {

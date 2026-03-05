@@ -1,7 +1,8 @@
+import { Index as Loading } from "@/components/loading";
 import { ModalContext, ModalPropsType } from "@/store/modalContext";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useContext } from "react";
-import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity, View } from "react-native";
 import { Text } from "./ui/text";
 
 export const Index = () => {
@@ -41,12 +42,10 @@ export const Index = () => {
               </View>
             )}
             {ModalProps?.content ?? (
-              <View>
-                {ModalProps?.showLoadingSpin && (
-                  <ActivityIndicator size="large" />
-                )}
-                <Text>{ModalProps?.loadingText}</Text>
-              </View>
+              <Loading
+                showLoadingSpin={ModalProps?.showLoadingSpin}
+                loadingText={ModalProps?.loadingText}
+              />
             )}
           </View>
         </View>

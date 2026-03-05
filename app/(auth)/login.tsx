@@ -102,6 +102,7 @@ export default function Index() {
             ...prev,
             first_name: context?.data?.user?.name,
             image: context?.data?.user?.image,
+            email: context?.data?.user?.email,
             better_auth_userId: context?.data?.user?.id,
             better_auth_token: context?.data?.token,
           }));
