@@ -23,6 +23,19 @@ export type UserContextType = {
   userData: UserDataType | undefined;
   setUserData: (value: UserDataType) => void;
 };
+export const defaultUserData: UserDataType = {
+  id: undefined,
+  first_name: undefined,
+  last_name: undefined,
+  phoneNumber: undefined,
+  email: undefined,
+  role: "student",
+  better_auth_token: undefined,
+  better_auth_userId: undefined,
+  image: undefined,
+  skipOnboarding: false,
+  token: undefined,
+};
 
 export const UserContext = createContext<UserContextType>({
   userData: undefined,
@@ -32,19 +45,7 @@ export const UserContext = createContext<UserContextType>({
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [userData, setUserData] = useState<UserDataType>({
-    id: undefined,
-    first_name: undefined,
-    last_name: undefined,
-    phoneNumber: undefined,
-    email: undefined,
-    role: "student",
-    better_auth_token: undefined,
-    better_auth_userId: undefined,
-    image: undefined,
-    skipOnboarding: false,
-    token: undefined,
-  });
+  const [userData, setUserData] = useState<UserDataType>(defaultUserData);
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
