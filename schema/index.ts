@@ -22,6 +22,19 @@ export const setNewPasswordSchema = z.object({
 
 export type SetNewPasswordForm = z.infer<typeof setNewPasswordSchema>;
 
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().nonempty("required"),
+    newPassword: z.string().nonempty("required"),
+    confirmPassword: z.string().nonempty("required"),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "New passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type ChangePasswordForm = z.infer<typeof changePasswordSchema>;
+
 export const leaveRequestFormSchema = z.object({
   academic_year_id: z.string().uuid(),
   student_id: z.string().uuid().nullable().optional(),
