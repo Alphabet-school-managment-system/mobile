@@ -1,7 +1,7 @@
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { ModalContext, ModalPropsType } from "@/store/modalContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useContext, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import { ReactElement, useContext, useEffect } from "react";
 import { Menu } from "react-native-paper";
 
 export type MenuItemtype = {
@@ -14,10 +14,12 @@ export const Index = ({
   items,
   headerTitle,
   onClose,
+  icon,
 }: {
   items: MenuItemtype[];
   headerTitle: string;
   onClose?: () => void;
+  icon?: string | ReactElement;
 }) => {
   const { setModalProps } = useContext(ModalContext);
 
@@ -45,13 +47,14 @@ export const Index = ({
                   ...prev,
                   show: false,
                 }));
+                onClose?.();
               }}
             />
           ))}
         </>
       ),
     }));
-  }, [items]);
+  }, [headerTitle, items, onClose, setModalProps]);
 
   return (
     <TouchableOpacity
@@ -62,7 +65,17 @@ export const Index = ({
         }));
       }}
     >
-      <MaterialCommunityIcons name="dots-vertical" size={26} color="white" />
+      {typeof icon === "string" ? (
+        <MaterialCommunityIcons
+          name={icon.toString()}
+          size={26}
+          color="white"
+        />
+      ) : icon ? (
+        icon
+      ) : (
+        <MaterialCommunityIcons name="dots-vertical" size={26} color="white" />
+      )}
     </TouchableOpacity>
   );
 };

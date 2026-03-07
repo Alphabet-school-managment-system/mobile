@@ -31,7 +31,6 @@ export default function Index() {
   const { setConfirmationModalProps } = useContext(ConfirmationModalContext);
   const { setModalProps } = useContext(ModalContext);
   const { openBottomSheet, closeBottomSheet } = useContext(BottomSheetContext);
-
   const [loading, setLoading] = useState(false);
 
   const profileEndpoint = `${[userData?.role]}/${userData?.id}`;

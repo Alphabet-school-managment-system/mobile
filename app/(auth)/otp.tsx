@@ -1,14 +1,15 @@
 import Button from "@/components/ui/button";
 import { Index as Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
-import { Colors } from "@/constants/colors";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { emailOtp } from "@/lib/auth-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { OtpInput } from "react-native-otp-entry";
 import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
+
 const formatTime = (s: number) => {
   const result = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
   return result;

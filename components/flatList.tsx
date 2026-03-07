@@ -1,7 +1,7 @@
+import { Index as Loading } from "@/components/loading";
 import { useApiQuery } from "@/hooks/useApi";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { ListRenderItem, FlatList as MainFlatList, View } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { Text } from "./ui/text";
 
 export type FlatListProps<T> = {
@@ -34,10 +34,7 @@ const FlatList = <T,>({
       )}
 
       {isLoading ? (
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" />
-          <Text className="mt-2 text-gray-600">Loading...</Text>
-        </View>
+        <Loading />
       ) : error ? (
         <View className="flex-1 items-center justify-center px-4">
           <Text className="text-red-600 text-center" variant="bodyLarge">

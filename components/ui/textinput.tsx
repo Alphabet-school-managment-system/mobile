@@ -6,12 +6,12 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
-  TouchableOpacity,
   ViewStyle,
 } from "react-native";
 import { HelperText, TextInput as MainTextInput } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import dayjs from "dayjs";
 import { FlexStyle } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";

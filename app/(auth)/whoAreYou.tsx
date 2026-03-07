@@ -4,8 +4,9 @@ import { UserContext } from "@/store/userContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
 import React, { useContext } from "react";
-import { TouchableOpacity, View } from "react-native";
+import {  View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 
 type UserType = {
   title: string;

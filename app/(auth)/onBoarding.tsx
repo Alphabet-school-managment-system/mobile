@@ -8,13 +8,13 @@ import {
   Animated,
   FlatList,
   Image,
-  TouchableOpacity,
   useWindowDimensions,
   View,
 } from "react-native";
 import { useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { onboardingSlides } from "../../data/OnboardingData";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 
 const Index = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
