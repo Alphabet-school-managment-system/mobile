@@ -23,11 +23,8 @@ export const Index = ({
 }) => {
   const { setModalProps } = useContext(ModalContext);
 
-  useEffect(() => {
-    if (!items.length) return;
-
-    setModalProps((prev: ModalPropsType) => ({
-      ...prev,
+  const modalValues = () => {
+    return {
       show: false,
       showLoadingSpin: false,
       header: {
@@ -53,14 +50,20 @@ export const Index = ({
           ))}
         </>
       ),
-    }));
+    };
+  };
+
+  useEffect(() => {
+    if (!items.length) return;
+
+    setModalProps((prev: ModalPropsType) => modalValues());
   }, [headerTitle, items, onClose, setModalProps]);
 
   return (
     <TouchableOpacity
       onPress={() => {
         setModalProps((prev: ModalPropsType) => ({
-          ...prev,
+          ...modalValues(),
           show: true,
         }));
       }}
