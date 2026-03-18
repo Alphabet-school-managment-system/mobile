@@ -1,6 +1,11 @@
 import { Index as Loading } from "@/components/loading";
 import { useApiQuery } from "@/hooks/useApi";
-import React, { ReactElement } from "react";
+import {
+  defaultModalProps,
+  ModalContext,
+  ModalPropsType,
+} from "@/store/modalContext";
+import React, { ReactElement, useContext, useEffect } from "react";
 import { ListRenderItem, FlatList as MainFlatList, View } from "react-native";
 import { Text } from "./ui/text";
 
@@ -19,11 +24,26 @@ const FlatList = <T,>({
   enableFetch,
   emptyDataTitle,
 }: FlatListProps<T>) => {
-  const { data, isLoading, isFetching, error } = useApiQuery<any>(
+  const { data, isLoading, isFetching, error, refetch } = useApiQuery<any>(
     [apiEndpoint],
     apiEndpoint,
-    enableFetch,
+    enableFetch && !!apiEndpoint,
   );
+
+  const { setModalProps } = useContext(ModalContext);
+
+  useEffect(() => {
+    refetch();
+  }, [apiEndpoint]);
+
+  useEffect(() => {
+    setModalProps((prev: ModalPropsType) => {
+      return {
+        ...defaultModalProps,
+        show: isFetching,
+      };
+    });
+  }, [isFetching]);
 
   return (
     <View className="flex-1 bg-white px-4 pt-5">
@@ -33,7 +53,7 @@ const FlatList = <T,>({
         </Text>
       )}
 
-      {isLoading ? (
+      {isFetching ? (
         <Loading />
       ) : error ? (
         <View className="flex-1 items-center justify-center px-4">
@@ -48,7 +68,7 @@ const FlatList = <T,>({
           keyExtractor={(item: any, index) => item.id || `${index}`}
           contentContainerStyle={{
             paddingBottom: 20,
-            flexGrow: data.length > 0 ? 1 : 0,
+            flexGrow: data?.length > 0 ? 1 : 0,
           }}
           ListEmptyComponent={
             <View className="flex-1 items-center justify-center">
