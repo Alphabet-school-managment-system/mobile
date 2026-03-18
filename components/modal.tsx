@@ -38,7 +38,7 @@ export const Index = () => {
                   }}
                   className="w-1/4 items-end"
                 >
-                  <AntDesign name="close" size={18} color="black" />
+                  <AntDesign name="close" size={15} color="black" />
                 </TouchableOpacity>
               </View>
             )}
