@@ -1,6 +1,8 @@
 import { CustomHeaderOption } from "@/app/(auth)/_layout";
+import { UtilContext } from "@/store/utilContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack } from "expo-router";
+import { useContext } from "react";
 
 export default function AssessmentLayout() {
   const backIcon = (
@@ -8,6 +10,8 @@ export default function AssessmentLayout() {
   );
 
   const backRoute = "/(app)/(teacher)/assessment";
+  const { Util } = useContext(UtilContext);
+
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
@@ -22,10 +26,21 @@ export default function AssessmentLayout() {
         })}
       />
       <Stack.Screen
+        name="detail"
+        options={CustomHeaderOption({
+          backIcon: backIcon,
+          title: "Assessment Detail",
+          headerShown: true,
+          onBackPress: () => {
+            router.back();
+          },
+        })}
+      />
+      <Stack.Screen
         name="form"
         options={CustomHeaderOption({
           backIcon: backIcon,
-          title: "Create Assessment",
+          title: Util.routeTitle ?? "Create Assessment",
           headerShown: true,
           onBackPress: () => {
             router.replace(backRoute);
