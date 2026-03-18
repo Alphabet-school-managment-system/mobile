@@ -13,6 +13,7 @@ export type UserDataType = {
   image?: string | null;
   skipOnboarding?: boolean;
   token?: string;
+  subject_specialization?: string;
 };
 
 export type AppData = {
@@ -35,6 +36,7 @@ export const defaultUserData: UserDataType = {
   image: undefined,
   skipOnboarding: false,
   token: undefined,
+  subject_specialization: undefined,
 };
 
 export const UserContext = createContext<UserContextType>({

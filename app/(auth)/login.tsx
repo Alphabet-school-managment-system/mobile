@@ -71,6 +71,7 @@ export default function Index() {
         ...prev,
         id: ids?.user?.id,
         token: ids?.token,
+        subject_specialization: ids?.user?.subject_specialization,
       }));
       setTimeout(() => {
         setLoading(false);
