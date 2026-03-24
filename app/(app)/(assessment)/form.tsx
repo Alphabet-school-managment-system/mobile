@@ -175,13 +175,22 @@ export default function Index() {
         />
 
         <GradeSectionPicker
-          selectedGrade={selectedGrade}
-          selectedGradeDisplay={selectedGradeDisplay}
-          selectedSection={selectedSection}
-          gradeMenuItems={gradeMenuItems}
-          sectionMenuItems={sectionMenuItems}
-          gradeErrorMessage={errors.grade?.message}
-          sectionErrorMessage={errors.section?.message}
+          selected={{
+            grade: {
+              value: selectedGrade ?? "",
+              label: selectedGradeDisplay ?? "",
+            },
+            section: selectedSection ?? "",
+          }}
+          MenuItems={{ grade: gradeMenuItems, section: sectionMenuItems }}
+          ErrorMessage={{
+            grade: errors.grade?.message ?? "",
+            section: errors.section?.message ?? "",
+          }}
+          label={{
+            grade: { value: "Grade", show: true },
+            section: { value: "Section (optional)", show: true },
+          }}
         />
 
         <Controller

@@ -145,7 +145,7 @@ export const Index = ({
       <View className="flex-row justify-center items-center mr-2">
         <TouchableOpacity
           onPress={() => {
-            onClose({ showLoading: false, hasError: false });
+            onClose({ showLoading: false, hasError: true });
           }}
         >
           <Text className="!text-blue-500 text-base" variant="titleLarge">

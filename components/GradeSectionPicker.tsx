@@ -5,9 +5,10 @@ import { useApiQuery } from "@/hooks/useApi";
 import { getGradeLabel } from "@/hooks/useUtil";
 import { selectType } from "@/models";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Path as FormPath, UseFormSetValue } from "react-hook-form";
 import { View } from "react-native";
+import Toast from "react-native-toast-message";
 
 type AssignedGrade = {
   grade: string | number;
@@ -24,17 +25,61 @@ type UseGradeSectionOptionsParams<T extends GradeSectionFormValues> = {
   academicYearId?: string;
   selectedGrade?: string;
   selectedSection?: string;
-  setValue: UseFormSetValue<T>;
+  setValue?: UseFormSetValue<T>;
+  onGradeChange?: (value?: string) => void;
+  onSectionChange?: (value?: string) => void;
+};
+
+type GradeSectionSelection = {
+  grade?: string;
+  section?: string;
+};
+
+type UseGradeSectionPickerParams = {
+  userId?: string;
+  academicYearId?: string;
+  onGradeChange?: (value?: string) => void;
+  onSectionChange?: (value?: string) => void;
 };
 
 type GradeSectionPickerProps = {
-  selectedGrade?: string;
-  selectedGradeDisplay: string;
-  selectedSection?: string;
-  gradeMenuItems: MenuItemtype[];
-  sectionMenuItems: MenuItemtype[];
-  gradeErrorMessage?: string;
-  sectionErrorMessage?: string;
+  selected: {
+    grade: {
+      value: string;
+      label: string;
+    };
+    section: string;
+  };
+  MenuItems: {
+    grade: MenuItemtype[];
+    section: MenuItemtype[];
+  };
+  ErrorMessage: {
+    grade: string;
+    section: string;
+  };
+  label: {
+    grade?: {
+      value: string;
+      show: boolean;
+    };
+    section?: {
+      value: string;
+      show: boolean;
+    };
+  };
+  headerTitle?: {
+    grade?: string;
+    section?: string;
+  };
+  placeholder?: {
+    grade?: string;
+    section?: string;
+  };
+  loading?: {
+    grade?: boolean;
+    section?: boolean;
+  };
 };
 
 export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
@@ -46,9 +91,16 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
     selectedGrade,
     selectedSection,
     setValue,
+    onGradeChange,
+    onSectionChange,
   } = params;
 
-  const { data: assignedGrades = [] } = useApiQuery<AssignedGrade[]>(
+  const {
+    data: assignedGrades = [],
+    isFetching: assignedGradesLoading,
+    isError: assignedGradesError,
+    isSuccess: assignedGradesLoaded,
+  } = useApiQuery<AssignedGrade[]>(
     ["my-assigned-grade", userId ?? "", academicYearId ?? ""],
     `teacher/my-assigned-grade/${userId}/${academicYearId}`,
     Boolean(userId && academicYearId),
@@ -91,12 +143,34 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
     return sectionsByGrade.get(selectedGrade) ?? [];
   }, [sectionsByGrade, selectedGrade]);
 
+  const updateGrade = useCallback(
+    (value?: string) => {
+      onGradeChange?.(value);
+      if (setValue) {
+        setValue("grade" as FormPath<T>, value as any, {
+          shouldValidate: true,
+        });
+      }
+    },
+    [onGradeChange, setValue],
+  );
+
+  const updateSection = useCallback(
+    (value?: string) => {
+      onSectionChange?.(value);
+      if (setValue) {
+        setValue("section" as FormPath<T>, value as any, {
+          shouldValidate: true,
+        });
+      }
+    },
+    [onSectionChange, setValue],
+  );
+
   useEffect(() => {
     if (!selectedGrade) {
       if (selectedSection) {
-        setValue("section" as FormPath<T>, undefined as any, {
-          shouldValidate: true,
-        });
+        updateSection(undefined);
       }
       return;
     }
@@ -105,11 +179,9 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
       selectedSection &&
       !availableSections.some((section) => section.value === selectedSection)
     ) {
-      setValue("section" as FormPath<T>, undefined as any, {
-        shouldValidate: true,
-      });
+      updateSection(undefined);
     }
-  }, [availableSections, selectedGrade, selectedSection, setValue]);
+  }, [availableSections, selectedGrade, selectedSection, updateSection]);
 
   const gradeMenuItems = useMemo<MenuItemtype[]>(() => {
     if (!availableGrades.length) {
@@ -126,12 +198,10 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
       title: grade.label,
       leadingIcon: selectedGrade === grade.value ? "check" : "school-outline",
       onPress: () => {
-        setValue("grade" as FormPath<T>, String(grade.value) as any, {
-          shouldValidate: true,
-        });
+        updateGrade(String(grade.value));
       },
     }));
-  }, [availableGrades, selectedGrade, setValue]);
+  }, [availableGrades, selectedGrade, updateGrade]);
 
   const sectionMenuItems = useMemo<MenuItemtype[]>(() => {
     if (!selectedGrade) {
@@ -159,9 +229,7 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
         title: "None",
         leadingIcon: "close-circle-outline",
         onPress: () => {
-          setValue("section" as FormPath<T>, undefined as any, {
-            shouldValidate: true,
-          });
+          updateSection(undefined);
         },
       },
       ...availableSections.map((section) => ({
@@ -171,13 +239,11 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
             ? "check-circle-outline"
             : "account-group-outline",
         onPress: () => {
-          setValue("section" as FormPath<T>, String(section.value) as any, {
-            shouldValidate: true,
-          });
+          updateSection(String(section.value));
         },
       })),
     ];
-  }, [availableSections, selectedGrade, selectedSection, setValue]);
+  }, [availableSections, selectedGrade, selectedSection, updateSection]);
 
   const selectedGradeLabel = selectedGrade
     ? getGradeLabel(Number(selectedGrade))
@@ -193,75 +259,198 @@ export const useGradeSectionOptions = <T extends GradeSectionFormValues>(
     gradeMenuItems,
     sectionMenuItems,
     selectedGradeDisplay,
+    assignedGrades,
+    assignedGradesLoading,
+    assignedGradesError,
+    assignedGradesLoaded,
+    availableGradesCount: availableGrades.length,
   };
 };
 
+export const useGradeSectionPicker = ({
+  userId,
+  academicYearId,
+  onGradeChange,
+  onSectionChange,
+}: UseGradeSectionPickerParams) => {
+  const [selectedGradeSec, setSelectedGradeSec] =
+    useState<GradeSectionSelection>();
+
+  const {
+    gradeMenuItems,
+    sectionMenuItems,
+    selectedGradeDisplay,
+    assignedGradesLoading,
+    assignedGradesError,
+    assignedGradesLoaded,
+    availableGradesCount,
+  } = useGradeSectionOptions({
+    userId,
+    academicYearId,
+    selectedGrade: selectedGradeSec?.grade,
+    selectedSection: selectedGradeSec?.section,
+    onGradeChange: (value?: string) => {
+      setSelectedGradeSec({ grade: value, section: undefined });
+      onGradeChange?.(value);
+    },
+    onSectionChange: (value?: string) => {
+      setSelectedGradeSec((prev) => ({ ...prev, section: value }));
+      onSectionChange?.(value);
+    },
+  });
+
+  const showGradeSectionLoading =
+    Boolean(userId && academicYearId) &&
+    assignedGradesLoading &&
+    !assignedGradesError &&
+    availableGradesCount > 0;
+
+  const lastGradeToastRef = useRef<string>("");
+
+  useEffect(() => {
+    if (!userId || !academicYearId) return;
+    const toastKey = assignedGradesError
+      ? "grade|error"
+      : assignedGradesLoaded && availableGradesCount === 0
+        ? "grade|empty"
+        : "";
+
+    if (!toastKey || lastGradeToastRef.current === toastKey) return;
+    lastGradeToastRef.current = toastKey;
+
+    if (assignedGradesError) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to load grades/sections.",
+      });
+      return;
+    }
+
+    Toast.show({
+      type: "info",
+      text1: "No grades",
+      text2: "No grades/sections assigned.",
+    });
+  }, [
+    userId,
+    academicYearId,
+    assignedGradesError,
+    assignedGradesLoaded,
+    availableGradesCount,
+  ]);
+
+  return {
+    selectedGradeSec,
+    setSelectedGradeSec,
+    gradeMenuItems,
+    sectionMenuItems,
+    selectedGradeDisplay,
+    showGradeSectionLoading,
+  };
+};
+
+type CustomDropDownProps = {
+  label: string;
+  value?: string;
+  placeholder: string;
+  menuItems: MenuItemtype[];
+  headerTitle: string;
+  errorMessage?: string;
+  disabled?: boolean;
+  showLabel?: boolean;
+  loading?: {
+    value?: boolean;
+    placeholder?: string;
+  };
+};
+
+export const CustomDropDown = ({
+  label,
+  value,
+  placeholder,
+  menuItems,
+  headerTitle,
+  errorMessage,
+  disabled,
+  showLabel = true,
+  loading = {
+    value: false,
+    placeholder: undefined,
+  },
+}: CustomDropDownProps) => {
+  return (
+    <View className="mb-3">
+      {showLabel && (
+        <Text className="text-base text-gray-600 font-semibold">{label}</Text>
+      )}
+      <View className="mt-2.5 flex-row items-center justify-between border border-gray-300 rounded-lg px-3 py-3 bg-gray-50">
+        <Text className={value ? "text-gray-900" : "text-gray-400"}>
+          {loading?.value ? loading?.placeholder : value || placeholder}
+        </Text>
+        <Menu
+          items={menuItems}
+          headerTitle={headerTitle}
+          icon={
+            <MaterialCommunityIcons
+              name="chevron-down"
+              size={24}
+              color="#6B7280"
+            />
+          }
+          disabled={disabled}
+        />
+      </View>
+      {errorMessage ? (
+        <View className="mt-3">
+          <ErrorMessage message={errorMessage} show={true} />
+        </View>
+      ) : null}
+    </View>
+  );
+};
+
 export default function GradeSectionPicker({
-  selectedGrade,
-  selectedGradeDisplay,
-  selectedSection,
-  gradeMenuItems,
-  sectionMenuItems,
-  gradeErrorMessage,
-  sectionErrorMessage,
+  selected,
+  MenuItems,
+  ErrorMessage,
+  label,
+  headerTitle,
+  placeholder,
+  loading,
 }: GradeSectionPickerProps) {
+  const showGradeLoading = Boolean(loading?.grade);
+  const showSectionLoading = Boolean(loading?.section);
+
   return (
     <>
-      <View className="mb-3">
-        <Text className="text-base text-gray-600 font-semibold">Grade</Text>
-        <View className="mt-2.5 flex-row items-center justify-between border border-gray-300 rounded-lg px-3 py-3 bg-gray-50">
-          <Text
-            className={selectedGrade ? "text-gray-900" : "text-gray-400"}
-          >
-            {selectedGradeDisplay || "Select grade"}
-          </Text>
-          <Menu
-            items={gradeMenuItems}
-            headerTitle="Select Grade"
-            icon={
-              <MaterialCommunityIcons
-                name="chevron-down"
-                size={24}
-                color="#6B7280"
-              />
-            }
-          />
-        </View>
-        {gradeErrorMessage ? (
-          <View className="mt-3">
-            <ErrorMessage message={gradeErrorMessage} show={true} />
-          </View>
-        ) : null}
-      </View>
+      <CustomDropDown
+        label={label.grade?.value ?? "Grade"}
+        value={selected.grade.value ? selected.grade.label : undefined}
+        placeholder={placeholder?.grade ?? "Select grade"}
+        headerTitle={headerTitle?.grade ?? "Select Grade"}
+        menuItems={MenuItems.grade}
+        errorMessage={ErrorMessage.grade}
+        showLabel={label.grade?.show}
+        loading={{
+          value: showGradeLoading,
+          placeholder: "Loading grades...",
+        }}
+      />
 
-      <View className="mb-3">
-        <Text className="text-base text-gray-600 font-semibold">
-          Section (optional)
-        </Text>
-        <View className="mt-2.5 flex-row items-center justify-between border border-gray-300 rounded-lg px-3 py-3 bg-gray-50">
-          <Text
-            className={selectedSection ? "text-gray-900" : "text-gray-400"}
-          >
-            {selectedSection || "Select section"}
-          </Text>
-          <Menu
-            items={sectionMenuItems}
-            headerTitle="Select Section"
-            icon={
-              <MaterialCommunityIcons
-                name="chevron-down"
-                size={24}
-                color="#6B7280"
-              />
-            }
-          />
-        </View>
-        {sectionErrorMessage ? (
-          <View className="mt-3">
-            <ErrorMessage message={sectionErrorMessage} show={true} />
-          </View>
-        ) : null}
-      </View>
+      <CustomDropDown
+        label={label.section?.value ?? "Section (optional)"}
+        value={selected.section || undefined}
+        placeholder={placeholder?.section ?? "Select section"}
+        headerTitle={headerTitle?.section ?? "Select Section"}
+        menuItems={MenuItems.section}
+        errorMessage={ErrorMessage.section}
+        showLabel={label.section?.show}
+        loading={{
+          value: showSectionLoading,
+          placeholder: "Loading sections...",
+        }}
+      />
     </>
   );
 }
