@@ -62,3 +62,14 @@ export const assessmentFormSchema = z.object({
 });
 
 export type AssessmentForm = z.input<typeof assessmentFormSchema>;
+
+export const markFormSchema = z.object({
+  assessment_id: z.string().uuid("Invalid assessment id"),
+  student_id: z.string().uuid("Invalid student id"),
+  score: z.coerce
+    .number({ message: "required" })
+    .min(0, "Score must be at least 0")
+    .max(100, "Score cannot exceed 100"),
+});
+
+export type MarkForm = z.input<typeof markFormSchema>;
