@@ -51,7 +51,7 @@ const Button = ({
       }}
       className={`${tranparent ? "!bg-transparent" : `!bg-[${colors.primary}]`} w-full ${className}`}
       contentStyle={{
-        height: 55,
+        height: 50,
         ...contentStyle,
       }}
       textColor={textColor ?? Colors.white}

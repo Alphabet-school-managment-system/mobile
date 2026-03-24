@@ -1,8 +1,8 @@
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { Colors } from "@/constants/colors";
 import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
 import { router, Stack } from "expo-router";
 import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
-import { TouchableOpacity } from "react-native";
 
 export const CustomHeaderOption = ({
   title,
@@ -32,15 +32,17 @@ export const CustomHeaderOption = ({
           }
         }}
       >
-        {backIcon ? (
-          backIcon
-        ) : (
-          <MaterialDesignIcons
-            name="arrow-left"
-            size={24}
-            color={Colors.darkBlack}
-          />
-        )}
+        <>
+          {backIcon ? (
+            backIcon
+          ) : (
+            <MaterialDesignIcons
+              name="arrow-left"
+              size={24}
+              color={Colors.darkBlack}
+            />
+          )}
+        </>
       </TouchableOpacity>
     ),
   };

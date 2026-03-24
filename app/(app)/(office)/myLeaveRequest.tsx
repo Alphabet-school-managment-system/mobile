@@ -7,7 +7,9 @@ import { defaultUtilProps, UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
 import { router } from "expo-router";
 import { useContext, useEffect } from "react";
-import { TouchableOpacity, View } from "react-native";
+import {  View } from "react-native";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+
 import { useTheme } from "react-native-paper";
 
 type LeaveRequestItemProps = {

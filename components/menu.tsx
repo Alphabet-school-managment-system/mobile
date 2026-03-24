@@ -1,7 +1,7 @@
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { ModalContext, ModalPropsType } from "@/store/modalContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { useContext, useEffect } from "react";
-import { TouchableOpacity } from "react-native";
+import { ReactElement, useContext, useMemo } from "react";
 import { Menu } from "react-native-paper";
 
 export type MenuItemtype = {
@@ -14,18 +14,19 @@ export const Index = ({
   items,
   headerTitle,
   onClose,
+  icon,
+  disabled,
 }: {
   items: MenuItemtype[];
   headerTitle: string;
   onClose?: () => void;
+  icon?: string | ReactElement;
+  disabled?: boolean;
 }) => {
   const { setModalProps } = useContext(ModalContext);
 
-  useEffect(() => {
-    if (!items.length) return;
-
-    setModalProps((prev: ModalPropsType) => ({
-      ...prev,
+  const modalValues = useMemo(
+    () => ({
       show: false,
       showLoadingSpin: false,
       header: {
@@ -45,24 +46,37 @@ export const Index = ({
                   ...prev,
                   show: false,
                 }));
+                onClose?.();
               }}
             />
           ))}
         </>
       ),
-    }));
-  }, [items]);
+    }),
+    [headerTitle, items, onClose, setModalProps],
+  );
 
   return (
     <TouchableOpacity
       onPress={() => {
         setModalProps((prev: ModalPropsType) => ({
-          ...prev,
+          ...modalValues,
           show: true,
         }));
       }}
+      disabled={disabled}
     >
-      <MaterialCommunityIcons name="dots-vertical" size={26} color="white" />
+      {typeof icon === "string" ? (
+        <MaterialCommunityIcons
+          name={icon.toString()}
+          size={26}
+          color="white"
+        />
+      ) : icon ? (
+        icon
+      ) : (
+        <MaterialCommunityIcons name="dots-vertical" size={26} color="white" />
+      )}
     </TouchableOpacity>
   );
 };

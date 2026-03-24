@@ -8,9 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import {  View } from "react-native";
 import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+
 
 export default function Index() {
   const [loading, setLoading] = useState(false);

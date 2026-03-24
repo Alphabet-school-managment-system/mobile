@@ -1,11 +1,12 @@
 import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { PasswordInput } from "@/components/ui/textinput";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { changePassword } from "@/lib/auth-client";
 import { ChangePasswordForm, changePasswordSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
@@ -144,7 +145,7 @@ export const Index = ({
       <View className="flex-row justify-center items-center mr-2">
         <TouchableOpacity
           onPress={() => {
-            onClose({ showLoading: false, hasError: false });
+            onClose({ showLoading: false, hasError: true });
           }}
         >
           <Text className="!text-blue-500 text-base" variant="titleLarge">

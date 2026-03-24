@@ -35,6 +35,7 @@ export const useApiMutation = <T>(
   const queryClient = useQueryClient();
 
   return useMutation({
+    mutationKey: keyToInvalidate,
     mutationFn: ({
       body,
       signal,

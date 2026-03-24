@@ -1,8 +1,10 @@
 import CustomDrawerContent from "@/components/ui/customDrawerContent";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { useTheme } from "react-native-paper";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+
 
 export default function TeacherLayout() {
   const { colors } = useTheme();

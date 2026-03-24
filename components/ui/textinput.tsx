@@ -6,12 +6,12 @@ import {
   StyleProp,
   StyleSheet,
   TextStyle,
-  TouchableOpacity,
   ViewStyle,
 } from "react-native";
 import { HelperText, TextInput as MainTextInput } from "react-native-paper";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import dayjs from "dayjs";
 import { FlexStyle } from "react-native";
 import { DatePickerModal } from "react-native-paper-dates";
@@ -47,6 +47,7 @@ export interface TextInputPropsType extends FlexStyle {
   labelStyle?: string;
   multiline?: boolean;
   numberOfLines?: number;
+  dense?: boolean;
 }
 
 function TextInputProps(props: TextInputPropsType) {
@@ -60,7 +61,7 @@ function TextInputProps(props: TextInputPropsType) {
     keyboardType,
     mode = "outlined",
     placeholder,
-    textColor = Colors.grey,
+    textColor = Colors.darkBlack,
     error = false,
     errorMessage,
     autoFocus,
@@ -73,7 +74,11 @@ function TextInputProps(props: TextInputPropsType) {
     labelStyle,
     multiline = false,
     numberOfLines,
+    dense = true,
   } = props;
+
+  const hasValue =
+    value !== null && typeof value !== "undefined" && String(value).length > 0;
 
   return {
     mode: mode as textInputMode,
@@ -89,14 +94,16 @@ function TextInputProps(props: TextInputPropsType) {
       ...(StyleSheet.flatten(style) || {}),
     },
     contentStyle: {
-      height: 50,
+      height: 45,
+      paddingVertical: 0,
+      fontSize: scale(hasValue ? 14 : 14),
       ...(StyleSheet.flatten(contentStyle) || {}),
     },
     outlineStyle: {
       borderColor: Colors.grey,
       borderWidth: 1,
       borderRadius: 7,
-      height: 50,
+      height: 45,
       width: "100%" as unknown as number,
       ...(StyleSheet.flatten(outlineStyle) || {}),
     },
@@ -108,7 +115,7 @@ function TextInputProps(props: TextInputPropsType) {
     ) : null,
     textColor,
     placeholder: placeholder,
-    placeholderTextColor: textColor,
+    placeholderTextColor: Colors.grey,
     error,
     className: `rounded-lg items-center justify-center mb-3 ${className}`,
     autoFocus,
@@ -121,6 +128,7 @@ function TextInputProps(props: TextInputPropsType) {
     labelStyle,
     multiline,
     numberOfLines,
+    dense,
   };
 }
 
@@ -172,7 +180,7 @@ export const PhoneNumberInput = (
 
   const result: TextInputPropsType = TextInputProps({
     ...props,
-    placeholder: t("Votre téléphone").toString(),
+    placeholder: t("Enter phone number").toString(),
 
     keyboardType: "phone-pad",
     left: () => (

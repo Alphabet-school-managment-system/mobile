@@ -45,3 +45,31 @@ export const leaveRequestFormSchema = z.object({
 });
 
 export type LeaveRequestForm = z.infer<typeof leaveRequestFormSchema>;
+
+export const assessmentFormSchema = z.object({
+  academic_year_id: z.string().uuid(),
+  title: z.string().trim().min(1, "required").max(50, "Max 50 characters"),
+  subject: z.string().trim(),
+  grade: z.string({ message: "require" }).max(100).trim(),
+  section: z.string().max(100).trim().optional(),
+  max_score: z.coerce
+    .number({ message: "required" })
+    .int("Max score must be a whole number")
+    .min(1, "Max score must be at least 1")
+    .max(100, "Max score cannot exceed 100"),
+  note: z.string().max(250).nullable().optional(),
+  teacher_id: z.string().uuid().nullable().optional(),
+});
+
+export type AssessmentForm = z.input<typeof assessmentFormSchema>;
+
+export const markFormSchema = z.object({
+  assessment_id: z.string().uuid("Invalid assessment id"),
+  student_id: z.string().uuid("Invalid student id"),
+  score: z.coerce
+    .number({ message: "required" })
+    .min(0, "Score must be at least 0")
+    .max(100, "Score cannot exceed 100"),
+});
+
+export type MarkForm = z.input<typeof markFormSchema>;

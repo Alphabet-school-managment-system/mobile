@@ -1,8 +1,9 @@
 import { Index as Loading } from "@/components/loading";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { ModalContext, ModalPropsType } from "@/store/modalContext";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useContext } from "react";
-import { Modal, TouchableOpacity, View } from "react-native";
+import { Modal, View } from "react-native";
 import { Text } from "./ui/text";
 
 export const Index = () => {
@@ -37,7 +38,7 @@ export const Index = () => {
                   }}
                   className="w-1/4 items-end"
                 >
-                  <AntDesign name="close" size={18} color="black" />
+                  <AntDesign name="close" size={15} color="black" />
                 </TouchableOpacity>
               </View>
             )}

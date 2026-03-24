@@ -7,10 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { TouchableOpacity, View } from "react-native";
+import { View } from "react-native";
 import { Checkbox, useTheme } from "react-native-paper";
 
 import { Index as Logo } from "@/components/ui/logo";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { useApiQuery } from "@/hooks/useApi";
 import { IdsContext } from "@/store/idsContext";
 import {
@@ -70,6 +71,7 @@ export default function Index() {
         ...prev,
         id: ids?.user?.id,
         token: ids?.token,
+        subject_specialization: ids?.user?.subject_specialization,
       }));
       setTimeout(() => {
         setLoading(false);

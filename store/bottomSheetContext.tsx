@@ -8,8 +8,9 @@ import { type StyleProp, type ViewStyle } from "react-native";
 
 export type BottomSheetPropsType = {
   show: boolean;
-  title?: string;
+  title?: string | ReactElement;
   content?: string | ReactElement;
+  contentKey?: string;
   children?: ReactElement;
   footer?: ReactElement;
   containerStyle?: StyleProp<ViewStyle>;
@@ -31,6 +32,7 @@ export const defaultBottomSheetProps: BottomSheetPropsType = {
   show: false,
   title: undefined,
   content: undefined,
+  contentKey: undefined,
   children: undefined,
   footer: undefined,
   containerStyle: undefined,
@@ -66,6 +68,15 @@ export const BottomSheetProvider: React.FC<{ children: ReactNode }> = ({
     setBottomSheetProps((prev: BottomSheetPropsType) => ({
       ...prev,
       show: false,
+      title: undefined,
+      content: undefined,
+      children: undefined,
+      footer: undefined,
+      containerStyle: undefined,
+      fitToContents: false,
+      skipPartiallyExpanded: false,
+      onClose: undefined,
+      contentKey: undefined,
     }));
   };
 

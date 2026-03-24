@@ -27,9 +27,12 @@ export interface AcademicYear {
 
 export interface Assessment {
   id: string;
+  academic_year_id: string;
   title: string;
   term: string;
   subject: string;
+  grade: string;
+  section?: string;
   max_score: number;
   note?: string | null;
   teacher_id?: string | null;
@@ -287,3 +290,14 @@ export interface Dashboard {
   total_library_items?: number | null;
   total_library_items_loaned?: number | null;
 }
+
+export type levels_of_education =
+  | "kg"
+  | "primary"
+  | "secondary"
+  | "college_prep";
+
+export type selectType = {
+  label: string;
+  value: string | number | boolean | any;
+};
