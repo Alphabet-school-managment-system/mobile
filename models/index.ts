@@ -301,3 +301,5 @@ export type selectType = {
   label: string;
   value: string | number | boolean | any;
 };
+
+export { AttendanceStatus };

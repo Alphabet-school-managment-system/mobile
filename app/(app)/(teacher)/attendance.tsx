@@ -7,12 +7,12 @@ export default function Index() {
     {
       icon: <FontAwesome name="calendar-check-o" size={30} color="white" />,
       title: "Take Attendance",
-      route: "/(app)/(attendance)/form",
+      route: "/(app)/(attendance)/take",
     },
     {
       icon: <MaterialCommunityIcons name="view-week" size={30} color="white" />,
       title: "Browse",
-      route: "/(app)/(attendance)/list",
+      route: "/(app)/(attendance)/browse",
     },
   ];
 

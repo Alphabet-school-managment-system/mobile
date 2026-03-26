@@ -1,3 +1,9 @@
+// Enums
+export enum AttendanceStatusEnum {
+  Present = "Present",
+  Absent = "Absent",
+  Excused = "Excused",
+}
 export type AttendanceStatus = "Present" | "Absent" | "Excused";
 
 export type BehaviorType = "Positive" | "Negative";

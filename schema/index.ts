@@ -1,5 +1,5 @@
+import { AttendanceStatusEnum } from "@/models/enums";
 import { z } from "zod";
-
 export const loginSchema = z.object({
   email: z.string().nonempty("required").email("Invalid email address"),
 
@@ -73,3 +73,16 @@ export const markFormSchema = z.object({
 });
 
 export type MarkForm = z.input<typeof markFormSchema>;
+
+export const attendanceSchema = z.object({
+  id: z.string().uuid(),
+  academic_year_id: z.string().uuid(),
+  term: z.string().max(100).optional(),
+  student_id: z.string().uuid(),
+  date: z.coerce.date(),
+  created_at: z.coerce.date().nullable().optional(),
+  updated_at: z.coerce.date().nullable().optional(),
+  status: z.nativeEnum(AttendanceStatusEnum),
+});
+
+export type AttendanceForm = z.input<typeof attendanceSchema>;

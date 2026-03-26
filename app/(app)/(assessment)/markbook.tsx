@@ -1,4 +1,7 @@
-import { useGradeSectionPicker } from "@/components/GradeSectionPicker";
+import {
+  CustomDropDown,
+  useGradeSectionPicker,
+} from "@/components/GradeSectionPicker";
 import { Index as Loading } from "@/components/loading";
 import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -124,9 +127,6 @@ export default function Index() {
         selectedGradeDisplay={selectedGradeDisplay}
         gradeMenuItems={gradeMenuItems}
         sectionMenuItems={sectionMenuItems}
-        assessmentMenuItems={assessmentMenuItems}
-        selectedAssessmentTitle={selectedAssessment?.title}
-        loadingAssessment={showAssessmentLoading}
         loadingGrade={showGradeSectionLoading}
         loadingSection={showGradeSectionLoading}
         onApply={() => {
@@ -134,6 +134,20 @@ export default function Index() {
           closeBottomSheet();
         }}
         disableApply={!selectedAssessment?.id}
+        extraFilterOption={[
+          <CustomDropDown
+            label="Assessment"
+            value={selectedAssessment?.title}
+            placeholder="Select assessment"
+            menuItems={assessmentMenuItems}
+            headerTitle="Select Assessment"
+            showLabel={true}
+            loading={{
+              value: showAssessmentLoading,
+              placeholder: "Loading assessments...",
+            }}
+          />,
+        ]}
       />
     ),
     [
@@ -180,8 +194,8 @@ export default function Index() {
 
   const renderStudentItem = ({ item }: { item: studentData }) => (
     <RenderStudentItem
-      item={item}
-      onPress={openMarkSheet}
+      item={item?.student}
+      onPress={() => openMarkSheet(item)}
       rightItem={
         <View className="items-end">
           <Text className="text-gray-500" variant="bodySmall">

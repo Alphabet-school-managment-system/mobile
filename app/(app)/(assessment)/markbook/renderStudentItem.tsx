@@ -3,11 +3,13 @@ import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { Student } from "@/models";
 import { ReactElement } from "react";
 import { Image, View } from "react-native";
-import { studentData } from "../markbook";
+type StudentLike = {
+  student: Student;
+};
 
 type RenderStudentItemProps = {
-  item: studentData;
-  onPress: (data: studentData) => void;
+  item: Student;
+  onPress: (data: Student) => void;
   rightItem?: ReactElement;
 };
 
@@ -17,7 +19,7 @@ const getInitials = (student: Student) => {
   return `${first}${last}`.toUpperCase();
 };
 
-export default function RenderStudentItem({
+export default function RenderStudentItem<T extends StudentLike>({
   item,
   onPress,
   rightItem,
@@ -28,26 +30,26 @@ export default function RenderStudentItem({
       onPress={() => onPress(item)}
     >
       <View className="flex-row items-center">
-        {item.student.image ? (
+        {item.image ? (
           <Image
-            source={{ uri: item?.student.image }}
+            source={{ uri: item?.image }}
             className="h-12 w-12 rounded-full bg-gray-100"
             resizeMode="cover"
           />
         ) : (
           <View className="h-12 w-12 items-center justify-center rounded-full bg-gray-200">
             <Text className="text-gray-700" variant="titleSmall">
-              {getInitials(item?.student)}
+              {getInitials(item)}
             </Text>
           </View>
         )}
 
         <View className="ml-3 flex-1">
-          <Text className="text-gray-900" variant="titleMedium">
-            {`${item?.student.first_name}, ${item?.student.middle_name}, ${item?.student.last_name}`}
+          <Text className="text-gray-900 capitalize" variant="titleMedium">
+            {`${item?.first_name}, ${item?.middle_name}, ${item?.last_name}`}
           </Text>
           <Text className="text-gray-500" variant="bodySmall">
-            {`STU-${String(item?.student.student_registration_number).padStart(6, "0")}`}
+            {`STU-${String(item?.student_registration_number).padStart(6, "0")}`}
           </Text>
         </View>
 
