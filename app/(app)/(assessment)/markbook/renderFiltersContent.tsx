@@ -1,8 +1,7 @@
-import GradeSectionPicker, {
-  CustomDropDown,
-} from "@/components/GradeSectionPicker";
+import GradeSectionPicker from "@/components/GradeSectionPicker";
 import { MenuItemtype } from "@/components/menu";
 import Button from "@/components/ui/button";
+import { ReactElement, cloneElement } from "react";
 import { View } from "react-native";
 
 type GradeSectionSelection = {
@@ -15,11 +14,9 @@ type RenderFiltersContentProps = {
   selectedGradeDisplay?: string;
   gradeMenuItems: MenuItemtype[];
   sectionMenuItems: MenuItemtype[];
-  assessmentMenuItems: MenuItemtype[];
-  selectedAssessmentTitle?: string;
+  extraFilterOption: ReactElement[];
   onApply: () => void;
   disableApply: boolean;
-  loadingAssessment?: boolean;
   loadingGrade?: boolean;
   loadingSection?: boolean;
 };
@@ -29,13 +26,11 @@ export default function RenderFiltersContent({
   selectedGradeDisplay,
   gradeMenuItems,
   sectionMenuItems,
-  assessmentMenuItems,
-  selectedAssessmentTitle,
   onApply,
   disableApply,
-  loadingAssessment = false,
   loadingGrade = false,
   loadingSection = false,
+  extraFilterOption = [],
 }: RenderFiltersContentProps) {
   return (
     <View className="px-3 pb-2">
@@ -56,18 +51,11 @@ export default function RenderFiltersContent({
         loading={{ grade: loadingGrade, section: loadingSection }}
       />
 
-      <CustomDropDown
-        label="Assessment"
-        value={selectedAssessmentTitle}
-        placeholder="Select assessment"
-        menuItems={assessmentMenuItems}
-        headerTitle="Select Assessment"
-        showLabel={true}
-        loading={{
-          value: loadingAssessment,
-          placeholder: "Loading assessments...",
-        }}
-      />
+      {extraFilterOption.map((item: ReactElement, index: number) => {
+        return cloneElement(item, {
+          key: item.key ?? `extra-filter-${index}`,
+        });
+      })}
 
       <Button
         title="Apply Filters"

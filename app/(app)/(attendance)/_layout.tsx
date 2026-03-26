@@ -8,11 +8,11 @@ export default function AttendanceLayout() {
   );
 
   const backRoute = "/(app)/(teacher)/attendance";
-  
+
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
-        name="list"
+        name="browse"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Browse Attendance",
@@ -23,7 +23,7 @@ export default function AttendanceLayout() {
         })}
       />
       <Stack.Screen
-        name="form"
+        name="take"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Take Daily Attendance",
