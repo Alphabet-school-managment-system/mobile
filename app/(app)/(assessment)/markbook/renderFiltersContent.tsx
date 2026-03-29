@@ -13,12 +13,13 @@ type RenderFiltersContentProps = {
   selectedGradeSec?: GradeSectionSelection;
   selectedGradeDisplay?: string;
   gradeMenuItems: MenuItemtype[];
-  sectionMenuItems: MenuItemtype[];
+  sectionMenuItems?: MenuItemtype[];
   extraFilterOption: ReactElement[];
   onApply: () => void;
   disableApply: boolean;
   loadingGrade?: boolean;
   loadingSection?: boolean;
+  hideSection?: boolean;
 };
 
 export default function RenderFiltersContent({
@@ -31,6 +32,7 @@ export default function RenderFiltersContent({
   loadingGrade = false,
   loadingSection = false,
   extraFilterOption = [],
+  hideSection,
 }: RenderFiltersContentProps) {
   return (
     <View className="px-3 pb-2">
@@ -42,13 +44,14 @@ export default function RenderFiltersContent({
           },
           section: selectedGradeSec?.section ?? "",
         }}
-        MenuItems={{ grade: gradeMenuItems, section: sectionMenuItems }}
+        MenuItems={{ grade: gradeMenuItems, section: sectionMenuItems ?? [] }}
         ErrorMessage={{ grade: "", section: "" }}
         label={{
           grade: { value: "Grade", show: true },
           section: { value: "Section", show: true },
         }}
         loading={{ grade: loadingGrade, section: loadingSection }}
+        hideSection={hideSection}
       />
 
       {extraFilterOption.map((item: ReactElement, index: number) => {

@@ -1,5 +1,5 @@
 import "@/i18n";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import type { ComponentType } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -16,9 +16,9 @@ import { ConfirmationModalProvider, ModalProvider } from "@/store/modalContext";
 import { UserProvider } from "@/store/userContext";
 import { UtilProvider } from "@/store/utilContext";
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
+import { queryClient } from "@/store/query-client";
 import "../global.css";
 
-const queryClient = new QueryClient();
 registerTranslation("en", en);
 
 function RootLayout() {

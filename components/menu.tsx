@@ -1,5 +1,9 @@
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
-import { ModalContext, ModalPropsType } from "@/store/modalContext";
+import {
+  ModalContext,
+  ModalPropsType,
+  type ModalSearchConfig,
+} from "@/store/modalContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { ReactElement, useContext, useMemo } from "react";
 import { Menu } from "react-native-paper";
@@ -10,20 +14,31 @@ export type MenuItemtype = {
   onPress: (item: any) => void;
 };
 
+export type MenuSearchConfig = Omit<
+  ModalSearchConfig,
+  "data" | "renderItem"
+>;
+
 export const Index = ({
   items,
   headerTitle,
   onClose,
   icon,
   disabled,
+  search,
+  showCloseIcon = false,
 }: {
   items: MenuItemtype[];
   headerTitle: string;
   onClose?: () => void;
   icon?: string | ReactElement;
   disabled?: boolean;
+  search?: MenuSearchConfig;
+  showCloseIcon?: boolean;
 }) => {
   const { setModalProps } = useContext(ModalContext);
+
+  const searchEnabled = search ? search.enabled ?? true : false;
 
   const modalValues = useMemo(
     () => ({
@@ -32,7 +47,34 @@ export const Index = ({
       header: {
         show: true,
         title: headerTitle,
+        showCloseIcon,
       },
+      search: searchEnabled
+        ? {
+            enabled: true,
+            placeholder: search?.placeholder,
+            filterKey: search?.filterKey,
+            filterFn: search?.filterFn,
+            keyExtractor: search?.keyExtractor,
+            emptyText: search?.emptyText,
+            data: items,
+            renderItem: (item: MenuItemtype) => (
+              <Menu.Item
+                key={item.title}
+                title={item.title}
+                leadingIcon={item.leadingIcon}
+                onPress={async () => {
+                  await item?.onPress?.(item);
+                  setModalProps((prev: ModalPropsType) => ({
+                    ...prev,
+                    show: false,
+                  }));
+                  onClose?.();
+                }}
+              />
+            ),
+          }
+        : undefined,
       content: (
         <>
           {items.map((item: MenuItemtype) => (
@@ -53,7 +95,19 @@ export const Index = ({
         </>
       ),
     }),
-    [headerTitle, items, onClose, setModalProps],
+    [
+      headerTitle,
+      items,
+      onClose,
+      search?.emptyText,
+      search?.filterFn,
+      search?.filterKey,
+      search?.keyExtractor,
+      search?.placeholder,
+      searchEnabled,
+      showCloseIcon,
+      setModalProps,
+    ],
   );
 
   return (

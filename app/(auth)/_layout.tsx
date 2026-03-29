@@ -3,6 +3,8 @@ import { Colors } from "@/constants/colors";
 import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
 import { router, Stack } from "expo-router";
 import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "@/store/query-client";
 
 export const CustomHeaderOption = ({
   title,
@@ -50,38 +52,40 @@ export const CustomHeaderOption = ({
 
 export default function AuthLayout() {
   return (
-    <Stack>
-      <Stack.Screen
-        name="onBoarding"
-        options={{ title: "On Boarding", headerShown: false }}
-      />
-      <Stack.Screen
-        name="whoAreYou"
-        options={{ title: "Who Are You", headerShown: false }}
-      />
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen
+          name="onBoarding"
+          options={{ title: "On Boarding", headerShown: false }}
+        />
+        <Stack.Screen
+          name="whoAreYou"
+          options={{ title: "Who Are You", headerShown: false }}
+        />
 
-      <Stack.Screen
-        name="login"
-        options={{ title: "Login", headerShown: false }}
-      />
-      <Stack.Screen
-        name="forgetPassword"
-        options={{ title: "Forget Password", headerShown: false }}
-      />
-      <Stack.Screen
-        name="otp"
-        options={CustomHeaderOption({
-          title: "OTP Verification",
-          headerShown: false,
-        })}
-      />
-      <Stack.Screen
-        name="setNewPassword"
-        options={CustomHeaderOption({
-          title: "Set New Password",
-          headerShown: false,
-        })}
-      />
-    </Stack>
+        <Stack.Screen
+          name="login"
+          options={{ title: "Login", headerShown: false }}
+        />
+        <Stack.Screen
+          name="forgetPassword"
+          options={{ title: "Forget Password", headerShown: false }}
+        />
+        <Stack.Screen
+          name="otp"
+          options={CustomHeaderOption({
+            title: "OTP Verification",
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="setNewPassword"
+          options={CustomHeaderOption({
+            title: "Set New Password",
+            headerShown: false,
+          })}
+        />
+      </Stack>
+    </QueryClientProvider>
   );
 }

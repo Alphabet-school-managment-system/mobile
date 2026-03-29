@@ -1,4 +1,8 @@
-import { Index as Menu, MenuItemtype } from "@/components/menu";
+import {
+  Index as Menu,
+  MenuItemtype,
+  type MenuSearchConfig,
+} from "@/components/menu";
 import { Text } from "@/components/ui/text";
 import { ErrorMessage } from "@/components/ui/textinput";
 import { useApiQuery } from "@/hooks/useApi";
@@ -79,6 +83,11 @@ type GradeSectionPickerProps = {
   loading?: {
     grade?: boolean;
     section?: boolean;
+  };
+  hideSection?: boolean;
+  menuSearch?: {
+    grade?: MenuSearchConfig;
+    section?: MenuSearchConfig;
   };
 };
 
@@ -359,6 +368,8 @@ type CustomDropDownProps = {
   errorMessage?: string;
   disabled?: boolean;
   showLabel?: boolean;
+  menuSearch?: MenuSearchConfig;
+  menuShowCloseIcon?: boolean;
   loading?: {
     value?: boolean;
     placeholder?: string;
@@ -374,6 +385,8 @@ export const CustomDropDown = ({
   errorMessage,
   disabled,
   showLabel = true,
+  menuSearch,
+  menuShowCloseIcon = true,
   loading = {
     value: false,
     placeholder: undefined,
@@ -399,6 +412,8 @@ export const CustomDropDown = ({
             />
           }
           disabled={disabled}
+          search={menuSearch}
+          showCloseIcon={menuShowCloseIcon}
         />
       </View>
       {errorMessage ? (
@@ -418,6 +433,8 @@ export default function GradeSectionPicker({
   headerTitle,
   placeholder,
   loading,
+  hideSection = false,
+  menuSearch,
 }: GradeSectionPickerProps) {
   const showGradeLoading = Boolean(loading?.grade);
   const showSectionLoading = Boolean(loading?.section);
@@ -432,25 +449,28 @@ export default function GradeSectionPicker({
         menuItems={MenuItems.grade}
         errorMessage={ErrorMessage.grade}
         showLabel={label.grade?.show}
+        menuSearch={menuSearch?.grade}
         loading={{
           value: showGradeLoading,
           placeholder: "Loading grades...",
         }}
       />
-
-      <CustomDropDown
-        label={label.section?.value ?? "Section (optional)"}
-        value={selected.section || undefined}
-        placeholder={placeholder?.section ?? "Select section"}
-        headerTitle={headerTitle?.section ?? "Select Section"}
-        menuItems={MenuItems.section}
-        errorMessage={ErrorMessage.section}
-        showLabel={label.section?.show}
-        loading={{
-          value: showSectionLoading,
-          placeholder: "Loading sections...",
-        }}
-      />
+      {!hideSection && (
+        <CustomDropDown
+          label={label.section?.value ?? "Section (optional)"}
+          value={selected.section || undefined}
+          placeholder={placeholder?.section ?? "Select section"}
+          headerTitle={headerTitle?.section ?? "Select Section"}
+          menuItems={MenuItems.section}
+          errorMessage={ErrorMessage.section}
+          showLabel={label.section?.show}
+          menuSearch={menuSearch?.section}
+          loading={{
+            value: showSectionLoading,
+            placeholder: "Loading sections...",
+          }}
+        />
+      )}
     </>
   );
 }
