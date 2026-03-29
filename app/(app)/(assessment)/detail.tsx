@@ -112,6 +112,7 @@ export default function Index() {
       ...defaultModalProps,
       content: <ConfirmationModal />,
       show: true,
+      showLoadingSpin: false,
     }));
   };
 

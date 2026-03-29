@@ -67,16 +67,30 @@ export const ConfirmationModalProvider: React.FC<{ children: ReactNode }> = ({
 };
 
 // normal modal
+export type ModalSearchConfig = {
+  enabled?: boolean;
+  placeholder?: string;
+  data?: any[];
+  filterKey?: string | ((item: any) => string);
+  filterFn?: (item: any, query: string) => boolean;
+  renderItem?: (item: any, index: number) => ReactElement;
+  keyExtractor?: (item: any, index: number) => string;
+  emptyText?: string;
+};
+
 export type ModalPropsType = {
   showLoadingSpin?: boolean;
   loadingText?: string;
   content?: string | ReactElement;
   show: boolean;
+  widthPercent?: number;
   header?: {
     show?: boolean;
     title?: string;
+    showCloseIcon?: boolean;
   };
   animationType?: "fade" | "slide" | "none";
+  search?: ModalSearchConfig;
 };
 
 export type ModalContextType = {
@@ -90,9 +104,11 @@ export const ModalContext = createContext<ModalContextType>({
     loadingText: "Loading...",
     content: undefined,
     show: false,
+    widthPercent: 90,
     header: {
       show: false,
       title: undefined,
+      showCloseIcon: false,
     },
     animationType: "none",
   },
@@ -104,9 +120,11 @@ export const defaultModalProps: ModalPropsType = {
   loadingText: "Loading...",
   content: undefined,
   show: false,
+  widthPercent: 90,
   header: {
     show: false,
     title: undefined,
+    showCloseIcon: false,
   },
   animationType: "none",
 };

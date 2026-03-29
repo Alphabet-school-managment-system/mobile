@@ -1,32 +1,34 @@
 import { useApiQuery } from "@/hooks/useApi";
 import { levels_of_education, selectType } from "@/models";
 
-const gradeMap: Record<levels_of_education, { label: string; value: number }[]> =
-  {
-    kg: [
-      { label: "KG - 1", value: -2 },
-      { label: "KG - 2", value: -1 },
-      { label: "KG - 3", value: 0 },
-    ],
-    primary: [
-      { label: "Grade 1", value: 1 },
-      { label: "Grade 2", value: 2 },
-      { label: "Grade 3", value: 3 },
-      { label: "Grade 4", value: 4 },
-      { label: "Grade 5", value: 5 },
-      { label: "Grade 6", value: 6 },
-      { label: "Grade 7", value: 7 },
-      { label: "Grade 8", value: 8 },
-    ],
-    secondary: [
-      { label: "Grade 9", value: 9 },
-      { label: "Grade 10", value: 10 },
-    ],
-    college_prep: [
-      { label: "Grade 11", value: 11 },
-      { label: "Grade 12", value: 12 },
-    ],
-  };
+const gradeMap: Record<
+  levels_of_education,
+  { label: string; value: number }[]
+> = {
+  kg: [
+    { label: "KG - 1", value: -2 },
+    { label: "KG - 2", value: -1 },
+    { label: "KG - 3", value: 0 },
+  ],
+  primary: [
+    { label: "Grade 1", value: 1 },
+    { label: "Grade 2", value: 2 },
+    { label: "Grade 3", value: 3 },
+    { label: "Grade 4", value: 4 },
+    { label: "Grade 5", value: 5 },
+    { label: "Grade 6", value: 6 },
+    { label: "Grade 7", value: 7 },
+    { label: "Grade 8", value: 8 },
+  ],
+  secondary: [
+    { label: "Grade 9", value: 9 },
+    { label: "Grade 10", value: 10 },
+  ],
+  college_prep: [
+    { label: "Grade 11", value: 11 },
+    { label: "Grade 12", value: 12 },
+  ],
+};
 
 export const getGradeLabel = (grade: number) => {
   const gradeLabels: Record<string, string> = {
@@ -49,6 +51,35 @@ export const getGradeLabel = (grade: number) => {
   return gradeLabels[String(grade)] || "-";
 };
 
+const subjects = [
+  { label: "Local language", value: "Local_language" },
+  { label: "Mathematics", value: "mathematics" },
+  { label: "Physics", value: "physics" },
+  { label: "Chemistry", value: "chemistry" },
+  { label: "Biology", value: "biology" },
+  { label: "English", value: "english" },
+  { label: "History", value: "history" },
+  { label: "Geography", value: "geography" },
+  { label: "Computer Science", value: "computer_science" },
+  { label: "Economics", value: "economics" },
+  { label: "Business Studies", value: "business_studies" },
+  { label: "Civics", value: "civics" },
+  { label: "Physical Education", value: "physical_education" },
+  { label: "Music", value: "music" },
+  { label: "Art", value: "art" },
+  { label: "Religious Studies", value: "religious_studies" },
+  { label: "Environmental Science", value: "environmental_science" },
+  { label: "Social Studies", value: "social_studies" },
+  { label: "Philosophy", value: "philosophy" },
+  { label: "Political Science", value: "political_science" },
+  { label: "Special Education", value: "special_education" },
+  { label: "Other", value: "other" },
+];
+
+const get_speciality_label = (value: string): string => {
+  return subjects.find((s) => s.value === value)?.label ?? "Unknown";
+};
+
 export const useUtil = () => {
   const { data: ServerDate, isLoading: gettingServerDate } = useApiQuery<any>(
     [`util/server-date`],
@@ -69,5 +100,7 @@ export const useUtil = () => {
     getGradeLabel,
     ServerDate,
     gettingServerDate,
+    get_speciality_label,
+    subjects,
   };
 };

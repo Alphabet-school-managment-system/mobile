@@ -33,6 +33,17 @@ export default function LibraryLayout() {
           },
         })}
       />
+      <Stack.Screen
+        name="itemDetail"
+        options={CustomHeaderOption({
+          backIcon: backIcon,
+          title: "Library Item Detail",
+          headerShown: true,
+          onBackPress: () => {
+            router.back();
+          },
+        })}
+      />
     </Stack>
   );
 }
