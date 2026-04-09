@@ -6,6 +6,9 @@ import {
   ExpenseType,
   FeeStatus,
   FeeType,
+  LearningMaterialSource,
+  LearningMaterialFileType,
+  LearningMaterialStatus,
   LeaveStatus,
   LibraryItemType,
   Sex,
@@ -162,6 +165,23 @@ export interface LibraryItemLoan {
   status: BorrowStatus;
   note?: string | null;
   branchId?: string | null;
+}
+
+export interface LearningMaterial {
+  id: string;
+  title: string;
+  description?: string | null;
+  material_url: string;
+  material_type: LearningMaterialFileType;
+  material_size: number;
+  uploaded_by: string;
+  branch_id: string;
+  grade?: string | null;
+  subject: string;
+  material_source: LearningMaterialSource;
+  status: LearningMaterialStatus;
+  created_at?: Date | null;
+  updated_at?: Date | null;
 }
 
 export interface Mark {
