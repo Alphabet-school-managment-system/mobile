@@ -1,6 +1,7 @@
 import React, { createContext, useState, type ReactNode } from "react";
 
 export type IdsType = {
+  schoolId?: string;
   branchId?: string;
   branchName?: string;
   academicYearId?: string;
@@ -20,6 +21,7 @@ export const IdsProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [ids, setIds] = useState<IdsType>({
+    schoolId: undefined,
     branchId: undefined,
     branchName: undefined,
     academicYearId: undefined,

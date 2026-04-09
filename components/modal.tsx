@@ -40,7 +40,8 @@ export const Index = () => {
     if (typeof searchConfig.filterKey === "function") {
       valueForItem = searchConfig.filterKey;
     } else if (typeof searchConfig.filterKey === "string") {
-      valueForItem = (item: any) => String(item?.[searchConfig.filterKey]);
+      valueForItem = (item: any) =>
+        String(item?.[searchConfig.filterKey as string]);
     } else {
       valueForItem = (item: any) =>
         String(item?.title ?? item?.label ?? item?.name ?? "");

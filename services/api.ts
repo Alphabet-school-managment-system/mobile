@@ -17,17 +17,22 @@ export const useApi = () => {
     options?: AxiosRequestConfig,
   ): Promise<T> => {
     const normalizedUrl = url.replace(/^\/+/, "");
+    const isFormData =
+      typeof FormData !== "undefined" && options?.data instanceof FormData;
+    const { headers: optionHeaders, ...restOptions } = options ?? {};
 
     const response = await axios({
       url: `${apiEndpoint}/${normalizedUrl}`,
       headers: {
-        "Content-Type": "application/json",
+        ...(isFormData
+          ? { "Content-Type": "multipart/form-data" }
+          : { "Content-Type": "application/json" }),
         ...(userData?.token
           ? { Authorization: `Bearer ${userData.token}` }
           : {}),
-        ...options?.headers,
+        ...optionHeaders,
       },
-      ...options,
+      ...restOptions,
     });
 
     return response.data as T;
@@ -44,7 +49,10 @@ export const useApi = () => {
   ) =>
     apiRequest<T>(url, {
       method,
-      data: JSON.stringify(body, (_, v) => (v === undefined ? null : v)),
+      data:
+        typeof FormData !== "undefined" && body instanceof FormData
+          ? body
+          : JSON.stringify(body, (_, v) => (v === undefined ? null : v)),
       signal,
     });
 

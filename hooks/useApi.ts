@@ -1,6 +1,6 @@
 import { useApi } from "@/services/api";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import axios from "axios";
+import { isAxiosError } from "axios";
 import Toast from "react-native-toast-message";
 
 export const useApiQuery = <T>(
@@ -29,7 +29,7 @@ export const useApiQuery = <T>(
 export const useApiMutation = <T>(
   keyToInvalidate: string[],
   url: string,
-  method: "POST" | "PUT" | "DELETE" = "POST",
+  method: "POST" | "PUT" | "DELETE" | "PATCH" = "POST",
 ) => {
   const { postData } = useApi();
   const queryClient = useQueryClient();
@@ -42,7 +42,7 @@ export const useApiMutation = <T>(
     }: {
       body: unknown | any;
       signal?: AbortSignal;
-    }) => postData<T>(url, { ...body }, method, signal),
+    }) => postData<T>(url, body, method, signal),
     onSuccess: (result: any) => {
       queryClient.invalidateQueries({ queryKey: keyToInvalidate });
       Toast.show({
@@ -62,7 +62,7 @@ export const useApiMutation = <T>(
         text2:
           error instanceof Error
             ? error.message
-            : axios.isAxiosError(error)
+            : isAxiosError(error)
               ? error.response?.data
               : "An error occurred",
       });

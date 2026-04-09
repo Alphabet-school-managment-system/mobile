@@ -25,7 +25,7 @@ const Button = ({
   icon,
   tranparent = false,
 }: {
-  title: string;
+  title: string | React.ReactNode;
   onPress: () => void;
   style?: ViewStyle;
   contentStyle?: ViewStyle;
@@ -62,7 +62,7 @@ const Button = ({
       icon={icon}
       // rippleColor={"#05b05b"}
     >
-      {t(title)}
+      {typeof title === "string" ? t(title) : title}
     </MainButton>
   );
 };

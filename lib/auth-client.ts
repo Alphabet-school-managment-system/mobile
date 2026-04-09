@@ -3,14 +3,10 @@ import { emailOTPClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
 import * as SecureStore from "expo-secure-store";
 import { fetch } from "expo/fetch";
-
-const API_BASE_URL = (
-  process.env.EXPO_PUBLIC_API_ENDPOINT ||
-  "https://wild-joan-bring-days.trycloudflare.com"
-).replace(/\/+$/, "");
+import { API_ENDPOINT } from "@/constants/constants";
 
 export const authClient = createAuthClient({
-  baseURL: `${API_BASE_URL}/api/auth`,
+  baseURL: `${API_ENDPOINT}/api/auth`,
   fetch,
   fetchOptions: {
     credentials: "include",
