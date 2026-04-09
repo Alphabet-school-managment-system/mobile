@@ -1,10 +1,9 @@
 import CustomDrawerContent from "@/components/ui/customDrawerContent";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
 import { View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
-
 
 export default function TeacherLayout() {
   const { colors } = useTheme();
@@ -84,9 +83,9 @@ export default function TeacherLayout() {
       />
 
       <Drawer.Screen
-        name="resource"
+        name="learning-material"
         options={{
-          title: "Resource",
+          title: "Learning Materials",
           drawerIcon: ({ size, color }) => (
             <Ionicons name="book-outline" size={size} color={color} />
           ),

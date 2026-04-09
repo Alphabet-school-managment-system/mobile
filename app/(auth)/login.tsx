@@ -65,6 +65,7 @@ export default function Index() {
       setIds({
         branchId: ids?.branch?.id,
         branchName: ids?.branch?.name,
+        schoolId: ids?.branch?.school_id,
         academicYearId: ids?.academic_year?.id,
       });
       setUserData((prev: UserDataType) => ({

@@ -48,3 +48,25 @@ export type BorrowStatus =
   | "OVERDUE"
   | "LOST"
   | "DAMAGED";
+
+export enum LearningMaterialStatusEnum {
+  DRAFT = "DRAFT",
+  PUBLISHED = "PUBLISHED",
+  ARCHIVED = "ARCHIVED",
+}
+
+export type LearningMaterialStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
+
+export enum LearningMaterialSourceEnum {
+  LINK = "link",
+  FILE = "file",
+}
+
+export type LearningMaterialSource = "link" | "file";
+
+export enum LearningMaterialFileTypeEnum {
+  DOCUMENT = "document",
+  VIDEO = "video",
+}
+
+export type LearningMaterialFileType = "document" | "video";
