@@ -1,14 +1,26 @@
 import { UserContext } from "@/store/userContext";
+import { Index as Loading } from "@/components/loading";
 import { Redirect, Stack } from "expo-router";
 import { useContext } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/store/query-client";
 
 export default function AppLayout() {
-  const { userData } = useContext(UserContext);
+  const { userData, isHydrated } = useContext(UserContext);
+
+  if (!isHydrated) {
+    return <Loading showLoadingSpin loadingText="Restoring session..." />;
+  }
+
   if (!userData?.skipOnboarding) {
     return <Redirect href="/(auth)/onBoarding" />;
-  } else if (!userData?.better_auth_token) {
+  }
+
+  if (!userData?.role) {
+    return <Redirect href="/(auth)/whoAreYou" />;
+  }
+
+  if (!userData?.token) {
     return <Redirect href="/(auth)/login" />;
   }
 

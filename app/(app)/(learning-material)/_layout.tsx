@@ -29,7 +29,7 @@ export default function LearningMaterialLayout() {
           title: "Upload Material",
           headerShown: true,
           onBackPress: () => {
-            router.back();
+            router.replace(backRoute);
           },
         })}
       />

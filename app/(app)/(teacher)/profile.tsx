@@ -1,5 +1,4 @@
 import { Index as ChangePasswordForm } from "@/app/(auth)/changePassword";
-import { Index as ConfirmationModal } from "@/components/confirmationModal";
 import Button, { buttonMode } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useApiQuery } from "@/hooks/useApi";
@@ -9,21 +8,19 @@ import { BottomSheetContext } from "@/store/bottomSheetContext";
 import {
   ConfirmationModalContext,
   ConfirmationModalPropsType,
+  defaultConfirmationModalProps,
   defaultModalProps,
   ModalContext,
   ModalPropsType,
 } from "@/store/modalContext";
-import {
-  defaultUserData,
-  UserContext,
-  UserDataType,
-} from "@/store/userContext";
+import { defaultUserData, UserContext } from "@/store/userContext";
 
 import { router } from "expo-router";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ScrollView, View } from "react-native";
 import { Avatar, List } from "react-native-paper";
 
+import { Index as ConfirmationModal } from "@/components/confirmationModal";
 import { Index as Loading } from "@/components/loading";
 
 export default function Index() {
@@ -31,7 +28,6 @@ export default function Index() {
   const { setConfirmationModalProps } = useContext(ConfirmationModalContext);
   const { setModalProps } = useContext(ModalContext);
   const { openBottomSheet, closeBottomSheet } = useContext(BottomSheetContext);
-  const [loading, setLoading] = useState(false);
 
   const profileEndpoint = `${[userData?.role]}/${userData?.id}`;
 
@@ -40,20 +36,43 @@ export default function Index() {
   >([profileEndpoint], profileEndpoint, !!profileEndpoint);
 
   const handleSignOut = async () => {
-    setLoading(true);
     try {
+      setModalProps((prev: ModalPropsType) => ({
+        ...defaultModalProps,
+        show: true,
+        showLoadingSpin: true,
+        loadingText: "Logging out...",
+      }));
       await signOut();
       clearDatas();
-    } finally {
-      setLoading(false);
+    } catch {
+      setModalProps((prev: ModalPropsType) => ({
+        ...defaultModalProps,
+        show: false,
+      }));
+      console.log(
+        "%capp/(app)/(teacher)/profile.tsx:45 error",
+        "color: #007acc;",
+      );
     }
   };
 
-  const clearDatas = async () => {
-    setUserData({
-      ...defaultUserData,
-    } as UserDataType);
-    router.replace("/(auth)/login");
+  const clearDatas = () => {
+    setTimeout(async () => {
+      setUserData((prev) => ({
+        ...defaultUserData,
+        skipOnboarding: prev.skipOnboarding ?? true,
+        role: undefined,
+      }));
+      await setModalProps((prev: ModalPropsType) => ({
+        ...defaultModalProps,
+        show: false,
+      }));
+      await setConfirmationModalProps((prev: ConfirmationModalPropsType) => ({
+        ...defaultConfirmationModalProps,
+      }));
+      router.replace("/(auth)/whoAreYou");
+    }, 100);
   };
 
   const openLogoutConfirmation = () => {
