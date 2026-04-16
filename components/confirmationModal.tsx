@@ -6,17 +6,24 @@ import { Text } from "@/components/ui/text";
 import {
   ConfirmationModalContext,
   ConfirmationModalPropsType,
+  defaultModalProps,
   defaultConfirmationModalProps,
+  ModalContext,
 } from "@/store/modalContext";
 
 export const Index = () => {
   const { confirmationModalProps, setConfirmationModalProps } = useContext(
     ConfirmationModalContext,
   );
+  const { setModalProps } = useContext(ModalContext);
 
   const closeModal = () => {
     setConfirmationModalProps((prev: ConfirmationModalPropsType) => ({
       ...defaultConfirmationModalProps,
+      show: false,
+    }));
+    setModalProps((prev) => ({
+      ...defaultModalProps,
       show: false,
     }));
   };
@@ -26,9 +33,9 @@ export const Index = () => {
     closeModal();
   };
 
-  const handleConfirm = () => {
-    confirmationModalProps?.onOk?.();
+  const handleConfirm = async () => {
     closeModal();
+    await confirmationModalProps?.onOk?.();
   };
 
   return (

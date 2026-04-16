@@ -76,10 +76,14 @@ export default function Index() {
       }));
       setTimeout(() => {
         setLoading(false);
+        setModalProps((prev: ModalPropsType) => ({
+          ...defaultModalProps,
+          show: false,
+        }));
         router.push("/(app)/(teacher)/dashboard");
       }, 100);
     }
-  }, [ids]);
+  }, [ids, setIds, setModalProps, setUserData]);
 
   const handlelogin = async (values: any) => {
     await signIn.email(
@@ -121,6 +125,15 @@ export default function Index() {
       show: loading || isGettingIds,
     }));
   }, [loading, isGettingIds]);
+
+  useEffect(() => {
+    return () => {
+      setModalProps((prev: ModalPropsType) => ({
+        ...defaultModalProps,
+        show: false,
+      }));
+    };
+  }, [setModalProps]);
 
   return (
     <View className="flex-1 px-5 justify-center rounded-3xl bg-white mx-4">

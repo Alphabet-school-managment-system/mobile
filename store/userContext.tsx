@@ -1,5 +1,11 @@
 "use client";
-import React, { createContext, useState, type ReactNode } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 
 export type UserDataType = {
   id?: string;
@@ -7,7 +13,7 @@ export type UserDataType = {
   last_name?: string;
   phoneNumber?: string;
   email?: string;
-  role: "student" | "teacher" | "parent";
+  role?: "student" | "teacher" | "parent";
   better_auth_token?: string;
   better_auth_userId?: string;
   image?: string | null;
@@ -21,8 +27,9 @@ export type AppData = {
 };
 
 export type UserContextType = {
-  userData: UserDataType | undefined;
-  setUserData: (value: UserDataType) => void;
+  userData: UserDataType;
+  setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
+  isHydrated: boolean;
 };
 export const defaultUserData: UserDataType = {
   id: undefined,
@@ -30,7 +37,7 @@ export const defaultUserData: UserDataType = {
   last_name: undefined,
   phoneNumber: undefined,
   email: undefined,
-  role: "student",
+  role: undefined,
   better_auth_token: undefined,
   better_auth_userId: undefined,
   image: undefined,
@@ -39,18 +46,91 @@ export const defaultUserData: UserDataType = {
   subject_specialization: undefined,
 };
 
+const USER_DATA_STORAGE_KEY = "alphabet-user-data";
+
 export const UserContext = createContext<UserContextType>({
-  userData: undefined,
+  userData: defaultUserData,
   setUserData: () => {},
+  isHydrated: false,
 });
 
 export const UserProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [userData, setUserData] = useState<UserDataType>(defaultUserData);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const hydrateUserData = async () => {
+      try {
+        const storedUserData = await AsyncStorage.getItem(USER_DATA_STORAGE_KEY);
+
+        if (!isMounted) {
+          return;
+        }
+
+        if (storedUserData) {
+          const parsedUserData = JSON.parse(
+            storedUserData,
+          ) as Partial<UserDataType>;
+
+          setUserData({
+            ...defaultUserData,
+            ...parsedUserData,
+          });
+        }
+      } catch (error) {
+        console.warn("Failed to restore user data", error);
+      } finally {
+        if (isMounted) {
+          setIsHydrated(true);
+        }
+      }
+    };
+
+    hydrateUserData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    const persistUserData = async () => {
+      try {
+        const hasAnyUserData = Object.entries(userData).some(([, value]) => {
+          if (typeof value === "boolean") {
+            return value;
+          }
+
+          return value !== undefined && value !== null;
+        });
+
+        if (!hasAnyUserData) {
+          await AsyncStorage.removeItem(USER_DATA_STORAGE_KEY);
+          return;
+        }
+
+        await AsyncStorage.setItem(
+          USER_DATA_STORAGE_KEY,
+          JSON.stringify(userData),
+        );
+      } catch (error) {
+        console.warn("Failed to persist user data", error);
+      }
+    };
+
+    persistUserData();
+  }, [isHydrated, userData]);
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider value={{ userData, setUserData, isHydrated }}>
       {children}
     </UserContext.Provider>
   );

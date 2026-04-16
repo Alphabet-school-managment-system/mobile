@@ -67,7 +67,7 @@ export default function Index() {
             });
             setTimeout(() => {
               setLoading(false);
-              router.push("/(auth)/login");
+              router.push("/login");
             }, 100);
           },
           onError(context: any) {

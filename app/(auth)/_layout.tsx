@@ -1,10 +1,13 @@
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { Colors } from "@/constants/colors";
+import { Index as Loading } from "@/components/loading";
 import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
-import { router, Stack } from "expo-router";
+import { Redirect, router, Stack, useSegments } from "expo-router";
 import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/store/query-client";
+import { useContext } from "react";
+import { UserContext } from "@/store/userContext";
 
 export const CustomHeaderOption = ({
   title,
@@ -51,6 +54,41 @@ export const CustomHeaderOption = ({
 };
 
 export default function AuthLayout() {
+  const { userData, isHydrated } = useContext(UserContext);
+  const segments = useSegments();
+  const currentScreen = segments[segments.length - 1] ?? "";
+  const allowedUnauthedScreens = [
+    "login",
+    "forgetPassword",
+    "otp",
+    "setNewPassword",
+  ];
+
+  if (!isHydrated) {
+    return <Loading showLoadingSpin loadingText="Restoring session..." />;
+  }
+
+  if (userData?.token) {
+    return <Redirect href="/(app)" />;
+  }
+
+  if (!userData?.skipOnboarding && currentScreen !== "onBoarding") {
+    return <Redirect href="/(auth)/onBoarding" />;
+  }
+
+  if (userData?.skipOnboarding && !userData?.role && currentScreen !== "whoAreYou") {
+    return <Redirect href="/(auth)/whoAreYou" />;
+  }
+
+  if (
+    userData?.skipOnboarding &&
+    userData?.role &&
+    !userData?.token &&
+    !allowedUnauthedScreens.includes(currentScreen)
+  ) {
+    return <Redirect href="/(auth)/login" />;
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <Stack>

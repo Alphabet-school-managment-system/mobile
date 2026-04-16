@@ -47,9 +47,7 @@ export default function Index() {
 
             setTimeout(() => {
               setLoading(false);
-              router.push(
-                `/(auth)/otp?email=${encodeURIComponent(values.email)}`,
-              );
+              router.push(`/otp?email=${encodeURIComponent(values.email)}`);
             }, 200);
           },
           onError(context: any) {

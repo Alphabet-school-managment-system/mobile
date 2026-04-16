@@ -1,12 +1,11 @@
 import { Index as Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
-import { UserContext } from "@/store/userContext";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { router } from "expo-router";
-import React, { useContext } from "react";
-import {  View } from "react-native";
-import { useTheme } from "react-native-paper";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+import { UserContext, UserDataType } from "@/store/userContext";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import React, { useContext } from "react";
+import { View } from "react-native";
+import { useTheme } from "react-native-paper";
 
 type UserType = {
   title: string;
@@ -58,7 +57,6 @@ const Index = () => {
                 ...prev,
                 role: user.value,
               }));
-              router.push("/(auth)/login");
             }}
           >
             <Ionicons name={user.icon} size={30} color="white" />
