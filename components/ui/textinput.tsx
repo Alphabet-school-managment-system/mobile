@@ -298,6 +298,8 @@ export const DatePicker = ({
   error,
   errorMessage,
   validDateRange,
+  allowEditing = true,
+  inputEnabled,
 }: {
   label?: string;
   value: Date;
@@ -311,6 +313,8 @@ export const DatePicker = ({
     startDate: Date | undefined;
     endDate: Date | undefined;
   };
+  allowEditing?: boolean;
+  inputEnabled?: boolean;
 }) => {
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<string>();
@@ -368,6 +372,8 @@ export const DatePicker = ({
           setDate(dayjs(selectedDate).format("DD/MM/YYYY"));
         }}
         validRange={validDateRange}
+        allowEditing={allowEditing}
+        inputEnabled={inputEnabled}
       />
     </>
   );

@@ -80,7 +80,7 @@ export default function Index() {
               text2: "Leave request submitted successfully",
             });
             setTimeout(() => {
-              router.push("/(app)/(office)/myLeaveRequest");
+              router.push("/(app)/(leave-request)/list");
             }, 100);
           },
         },

@@ -14,11 +14,13 @@ export const CustomHeaderOption = ({
   headerShown = true,
   onBackPress,
   backIcon,
+  headerRight,
 }: {
   title: string;
   headerShown?: boolean;
   onBackPress?: () => void;
   backIcon?: React.ReactNode;
+  headerRight?: () => React.ReactNode;
 }): ExtendedStackNavigationOptions => {
   return {
     title: title,
@@ -50,6 +52,7 @@ export const CustomHeaderOption = ({
         </>
       </TouchableOpacity>
     ),
+    headerRight,
   };
 };
 

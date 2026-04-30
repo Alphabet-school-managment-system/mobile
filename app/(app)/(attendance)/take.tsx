@@ -4,10 +4,11 @@ import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { DatePicker } from "@/components/ui/textinput";
 import { useApiQuery } from "@/hooks/useApi";
-import { AcademicYear, Attendance, AttendanceStatus, Student } from "@/models";
+import { Attendance, AttendanceStatus, Student } from "@/models";
 import { BottomSheetContext } from "@/store/bottomSheetContext";
 import { IdsContext } from "@/store/idsContext";
 import { UserContext } from "@/store/userContext";
+import { UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { FlatList, View } from "react-native";
@@ -30,6 +31,7 @@ const getStatusTextClass = (status?: AttendanceStatus) => {
 export default function Index() {
   const { userData } = useContext(UserContext);
   const { Ids } = useContext(IdsContext);
+  const { Util } = useContext(UtilContext);
   const {
     openBottomSheet,
     closeBottomSheet,
@@ -86,17 +88,17 @@ export default function Index() {
     Boolean(fetchStudents && attendanceEndpoint),
   );
 
-  const { data: academicYear } = useApiQuery<AcademicYear>(
-    ["academic-year"],
-    Ids?.branchId ? `academic-year/${Ids.branchId}` : "",
-    Boolean(Ids?.branchId),
-  );
+  // const { data: academicYear } = useApiQuery<AcademicYear>(
+  //   ["academic-year"],
+  //   Ids?.branchId ? `academic-year/${Ids.branchId}` : "",
+  //   Boolean(Ids?.branchId),
+  // );
 
-  const { data: serverDate } = useApiQuery<string>(
-    ["server-date"],
-    "util/server-date",
-    true,
-  );
+  // const { data: serverDate } = useApiQuery<string>(
+  //   ["server-date"],
+  //   "util/server-date",
+  //   true,
+  // );
 
   const attendanceQueryKey = useMemo(() => {
     return attendanceEndpoint ? [attendanceEndpoint] : [];
@@ -169,15 +171,15 @@ export default function Index() {
               value={selectedDate}
               onChange={setSelectedDate}
               validDateRange={{
-                startDate: academicYear?.start_date
-                  ? dayjs(academicYear.start_date).toDate()
+                startDate: Util?.acadamic_year?.start_date
+                  ? dayjs(Util.acadamic_year.start_date).toDate()
                   : undefined,
                 endDate: (() => {
-                  const yearEnd = academicYear?.end_date
-                    ? dayjs(academicYear.end_date)
+                  const yearEnd = Util?.acadamic_year?.end_date
+                    ? dayjs(Util.acadamic_year.end_date)
                     : undefined;
-                  const server = serverDate
-                    ? dayjs(serverDate, "YYYY-MM-DD")
+                  const server = Util?.serverDate
+                    ? dayjs(Util.serverDate, "YYYY-MM-DD")
                     : undefined;
 
                   if (yearEnd && server) {
@@ -195,12 +197,11 @@ export default function Index() {
       />
     ),
     [
-      academicYear?.end_date,
-      academicYear?.start_date,
+      Util?.acadamic_year,
       closeBottomSheet,
       gradeMenuItems,
       sectionMenuItems,
-      serverDate,
+      Util?.serverDate,
       selectedDate,
       selectedGradeDisplay,
       selectedGradeSec?.grade,
