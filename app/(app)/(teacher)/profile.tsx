@@ -45,15 +45,11 @@ export default function Index() {
       }));
       await signOut();
       clearDatas();
-    } catch {
+    } catch (e: any) {
       setModalProps((prev: ModalPropsType) => ({
         ...defaultModalProps,
         show: false,
       }));
-      console.log(
-        "%capp/(app)/(teacher)/profile.tsx:45 error",
-        "color: #007acc;",
-      );
     }
   };
 

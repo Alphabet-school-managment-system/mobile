@@ -6,8 +6,8 @@ import {
   ExpenseType,
   FeeStatus,
   FeeType,
-  LearningMaterialSource,
   LearningMaterialFileType,
+  LearningMaterialSource,
   LearningMaterialStatus,
   LeaveStatus,
   LibraryItemType,
@@ -61,6 +61,7 @@ export interface Behavior {
   academic_year_id: string;
   term: string;
   student_id: string;
+  teacher_id: string;
   date: Date;
   description?: string | null;
   type: BehaviorType;
