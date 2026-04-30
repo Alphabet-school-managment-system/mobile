@@ -12,8 +12,6 @@ import { Checkbox, useTheme } from "react-native-paper";
 
 import { Index as Logo } from "@/components/ui/logo";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
-import { useApiQuery } from "@/hooks/useApi";
-import { IdsContext } from "@/store/idsContext";
 import {
   defaultModalProps,
   ModalContext,
@@ -25,15 +23,10 @@ import Toast from "react-native-toast-message";
 export default function Index() {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { userData, setUserData } = useContext(UserContext);
-  const [getIds, setGetIds] = useState(false);
-  const { setIds } = useContext(IdsContext);
+  const { setUserData } = useContext(UserContext);
   const { setModalProps } = useContext(ModalContext);
 
   const { colors } = useTheme();
-  const apiEndpoint = {
-    getIds: `${userData?.role}/getIds/${userData?.better_auth_userId}`,
-  };
 
   const {
     control,
@@ -47,43 +40,6 @@ export default function Index() {
       rememberMe: checked,
     },
   });
-
-  const {
-    data: ids,
-    isLoading: isGettingIds,
-    refetch,
-  } = useApiQuery<any>([apiEndpoint.getIds], apiEndpoint.getIds, false);
-
-  useEffect(() => {
-    if (getIds === true && userData?.better_auth_userId) {
-      refetch();
-    }
-  }, [getIds]);
-
-  useEffect(() => {
-    if (ids) {
-      setIds({
-        branchId: ids?.branch?.id,
-        branchName: ids?.branch?.name,
-        schoolId: ids?.branch?.school_id,
-        academicYearId: ids?.academic_year?.id,
-      });
-      setUserData((prev: UserDataType) => ({
-        ...prev,
-        id: ids?.user?.id,
-        token: ids?.token,
-        subject_specialization: ids?.user?.subject_specialization,
-      }));
-      setTimeout(() => {
-        setLoading(false);
-        setModalProps((prev: ModalPropsType) => ({
-          ...defaultModalProps,
-          show: false,
-        }));
-        router.push("/(app)/(teacher)/dashboard");
-      }, 100);
-    }
-  }, [ids, setIds, setModalProps, setUserData]);
 
   const handlelogin = async (values: any) => {
     await signIn.email(
@@ -113,7 +69,14 @@ export default function Index() {
             better_auth_userId: context?.data?.user?.id,
             better_auth_token: context?.data?.token,
           }));
-          setGetIds(true);
+          setTimeout(() => {
+            setLoading(false);
+            setModalProps((prev: ModalPropsType) => ({
+              ...defaultModalProps,
+              show: false,
+            }));
+            router.push("/(app)/(teacher)/dashboard");
+          }, 100);
         },
       },
     );
@@ -122,9 +85,9 @@ export default function Index() {
   useEffect(() => {
     setModalProps((prev: ModalPropsType) => ({
       ...defaultModalProps,
-      show: loading || isGettingIds,
+      show: loading,
     }));
-  }, [loading, isGettingIds]);
+  }, [loading]);
 
   useEffect(() => {
     return () => {
