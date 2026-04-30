@@ -1,5 +1,6 @@
 import FlatList from "@/components/flatList";
 import { Text } from "@/components/ui/text";
+import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { StatusIndicator } from "@/constants/status";
 import { LeaveRequest } from "@/models";
 import { UserContext } from "@/store/userContext";
@@ -7,8 +8,7 @@ import { defaultUtilProps, UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
 import { router } from "expo-router";
 import { useContext, useEffect } from "react";
-import {  View } from "react-native";
-import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+import { View } from "react-native";
 
 import { useTheme } from "react-native-paper";
 
@@ -27,7 +27,7 @@ function LeaveRequestItem({ item }: LeaveRequestItemProps) {
       }}
       onPress={() => {
         router.push({
-          pathname: "/(app)/(office)/leaveRequestDetail",
+          pathname: "/(app)/(leave-request)/detail",
           params: { leaveRequest: JSON.stringify(item) },
         });
       }}

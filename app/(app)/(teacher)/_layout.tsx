@@ -54,7 +54,7 @@ export default function TeacherLayout() {
         }}
       />
       <Drawer.Screen
-        name="office"
+        name="self-service"
         options={{
           title: "Self Service",
           drawerIcon: ({ size, color }) => (

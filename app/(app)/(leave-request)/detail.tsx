@@ -5,10 +5,10 @@ import { StatusIndicator } from "@/constants/status";
 import { useApiMutation } from "@/hooks/useApi";
 import { LeaveRequest } from "@/models";
 import {
-  ConfirmationModalContext,
-  defaultModalProps,
-  ModalContext,
-  ModalPropsType,
+    ConfirmationModalContext,
+    defaultModalProps,
+    ModalContext,
+    ModalPropsType,
 } from "@/store/modalContext";
 import { UtilContext } from "@/store/utilContext";
 import dayjs from "dayjs";
@@ -57,7 +57,7 @@ export default function Index() {
       routeTitle: "Update Leave Request",
     });
     router.push({
-      pathname: "/(app)/(office)/leaveRequestForm",
+      pathname: "/(app)/(self-service)/leaveRequestForm",
       params: { leaveRequest: stringfiedData },
     });
   };
@@ -79,7 +79,7 @@ export default function Index() {
           {
             onSuccess: () => {
               setLoading(false);
-              router.replace("/(app)/(office)/myLeaveRequest");
+              router.replace("/(app)/(self-service)/list");
             },
             onError: () => {
               setLoading(false);
