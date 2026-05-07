@@ -1,4 +1,4 @@
-import { UserContext } from "@/store/userContext";
+import { UserContext } from "@/store/providers/UserContext";
 import axios, { AxiosRequestConfig } from "axios";
 import { useContext } from "react";
 

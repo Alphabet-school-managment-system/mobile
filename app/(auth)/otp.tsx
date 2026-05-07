@@ -2,7 +2,7 @@ import Button from "@/components/ui/button";
 import { Index as Logo } from "@/components/ui/logo";
 import { Text } from "@/components/ui/text";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
-import { emailOtp } from "@/lib/auth-client";
+import { emailOtp } from "@/lib/auth/auth-client";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
@@ -73,7 +73,7 @@ export default function OtpScreen() {
             setTimeout(() => {
               setLoading(false);
               router.push(
-                `/(auth)/setNewPassword?email=${encodeURIComponent(email)}&otp=${code}`,
+                `/(auth)/set-new-password?email=${encodeURIComponent(email)}&otp=${code}`,
               );
             }, 200);
           },

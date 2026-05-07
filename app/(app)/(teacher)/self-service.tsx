@@ -9,19 +9,19 @@ export default function Index() {
     {
       icon: <Ionicons name="create-outline" size={30} color="white" />,
       title: "New leave request",
-      route: "/(app)/(leave-request)/form",
+      route: "/(app)/(leave-request)/new",
     },
     {
       icon: (
         <MaterialCommunityIcons name="list-status" size={30} color="white" />
       ),
       title: "My requests",
-      route: "/(app)/(leave-request)/list",
+      route: "/(app)/(leave-request)/index",
     },
     {
       icon: <MaterialIcons name="report" size={30} color="white" />,
       title: "Student behavior report",
-      route: "/(app)/(behavior-report)/list",
+      route: "/(app)/(behavior-report)/index",
     },
   ];
 

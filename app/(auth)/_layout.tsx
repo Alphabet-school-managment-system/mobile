@@ -1,13 +1,13 @@
+import { Index as Loading } from "@/components/common/loading";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { Colors } from "@/constants/colors";
-import { Index as Loading } from "@/components/loading";
+import { UserContext } from "@/store/providers/UserContext";
+import { queryClient } from "@/store/query/query-client";
 import MaterialDesignIcons from "@react-native-vector-icons/material-design-icons";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, router, Stack, useSegments } from "expo-router";
 import { ExtendedStackNavigationOptions } from "expo-router/build/layouts/StackClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "@/store/query-client";
 import { useContext } from "react";
-import { UserContext } from "@/store/userContext";
 
 export const CustomHeaderOption = ({
   title,
@@ -62,9 +62,9 @@ export default function AuthLayout() {
   const currentScreen = segments[segments.length - 1] ?? "";
   const allowedUnauthedScreens = [
     "login",
-    "forgetPassword",
+    "forget-password",
     "otp",
-    "setNewPassword",
+    "set-new-password",
   ];
 
   if (!isHydrated) {
@@ -75,12 +75,16 @@ export default function AuthLayout() {
     return <Redirect href="/(app)" />;
   }
 
-  if (!userData?.skipOnboarding && currentScreen !== "onBoarding") {
-    return <Redirect href="/(auth)/onBoarding" />;
+  if (!userData?.skipOnboarding && currentScreen !== "onboarding") {
+    return <Redirect href="/(auth)/onboarding" />;
   }
 
-  if (userData?.skipOnboarding && !userData?.role && currentScreen !== "whoAreYou") {
-    return <Redirect href="/(auth)/whoAreYou" />;
+  if (
+    userData?.skipOnboarding &&
+    !userData?.role &&
+    currentScreen !== "who-are-you"
+  ) {
+    return <Redirect href="/(auth)/who-are-you" />;
   }
 
   if (
@@ -96,11 +100,11 @@ export default function AuthLayout() {
     <QueryClientProvider client={queryClient}>
       <Stack>
         <Stack.Screen
-          name="onBoarding"
+          name="onboarding"
           options={{ title: "On Boarding", headerShown: false }}
         />
         <Stack.Screen
-          name="whoAreYou"
+          name="who-are-you"
           options={{ title: "Who Are You", headerShown: false }}
         />
 
@@ -109,7 +113,7 @@ export default function AuthLayout() {
           options={{ title: "Login", headerShown: false }}
         />
         <Stack.Screen
-          name="forgetPassword"
+          name="forget-password"
           options={{ title: "Forget Password", headerShown: false }}
         />
         <Stack.Screen
@@ -120,7 +124,7 @@ export default function AuthLayout() {
           })}
         />
         <Stack.Screen
-          name="setNewPassword"
+          name="set-new-password"
           options={CustomHeaderOption({
             title: "Set New Password",
             headerShown: false,

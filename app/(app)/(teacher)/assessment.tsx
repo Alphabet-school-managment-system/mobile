@@ -8,12 +8,12 @@ export default function Index() {
     {
       icon: <Ionicons name="create-outline" size={30} color="white" />,
       title: "Create New",
-      route: "/(app)/(assessment)/form",
+      route: "/(app)/(assessment)/new",
     },
     {
       icon: <MaterialIcons name="assessment" size={30} color="white" />,
       title: "Browse",
-      route: "/(app)/(assessment)/list",
+      route: "/(app)/(assessment)/index",
     },
     {
       icon: <Entypo name="book" size={30} color="white" />,

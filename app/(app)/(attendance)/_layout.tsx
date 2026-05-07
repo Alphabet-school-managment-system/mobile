@@ -12,18 +12,7 @@ export default function AttendanceLayout() {
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
-        name="browse"
-        options={CustomHeaderOption({
-          backIcon: backIcon,
-          title: "Browse Attendance",
-          headerShown: true,
-          onBackPress: () => {
-            router.replace(backRoute);
-          },
-        })}
-      />
-      <Stack.Screen
-        name="take"
+        name="index"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Take Daily Attendance",

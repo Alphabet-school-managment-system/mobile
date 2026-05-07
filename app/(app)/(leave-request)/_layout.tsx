@@ -1,5 +1,5 @@
 import { CustomHeaderOption } from "@/app/(auth)/_layout";
-import { UtilContext } from "@/store/utilContext";
+import { UtilContext } from "@/store/providers/UtilContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack } from "expo-router";
 import { useContext } from "react";
@@ -16,7 +16,7 @@ export default function SelfServiceLayout() {
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
-        name="list"
+        name="index"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "My requests",
@@ -27,7 +27,7 @@ export default function SelfServiceLayout() {
         })}
       />
       <Stack.Screen
-        name="form"
+        name="new"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: Util.routeTitle ?? "New Leave Request",
@@ -38,13 +38,13 @@ export default function SelfServiceLayout() {
         })}
       />
       <Stack.Screen
-        name="detail"
+        name="[id]"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Leave Request Detail",
           headerShown: true,
           onBackPress: () => {
-            router.replace("/(app)/(leave-request)/list");
+            router.replace("/(app)/(leave-request)/index");
           },
         })}
       />

@@ -8,15 +8,18 @@ import { en, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
-import { Index as BottomSheet } from "@/components/bottomSheet";
-import { Index as Modal } from "@/components/modal";
-import { BottomSheetProvider } from "@/store/bottomSheetContext";
-import { IdsProvider } from "@/store/idsContext";
-import { ConfirmationModalProvider, ModalProvider } from "@/store/modalContext";
-import { UserProvider } from "@/store/userContext";
-import { UtilProvider } from "@/store/utilContext";
+import { Index as BottomSheet } from "@/components/common/bottomSheet";
+import { Index as Modal } from "@/components/common/modal";
+import { BottomSheetProvider } from "@/store/providers/BottomSheetContext";
+import { IdsProvider } from "@/store/providers/IdContext";
+import {
+  ConfirmationModalProvider,
+  ModalProvider,
+} from "@/store/providers/ModalContext";
+import { UserProvider } from "@/store/providers/UserContext";
+import { UtilProvider } from "@/store/providers/UtilContext";
+import { queryClient } from "@/store/query/query-client";
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
-import { queryClient } from "@/store/query-client";
 import "../global.css";
 
 registerTranslation("en", en);

@@ -1,10 +1,10 @@
-import { Index as ChangePasswordForm } from "@/app/(auth)/changePassword";
+import { Index as ChangePasswordForm } from "@/app/(auth)/change-password";
 import Button, { buttonMode } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { useApiQuery } from "@/hooks/useApi";
-import { signOut } from "@/lib/auth-client";
+import { signOut } from "@/lib/auth/auth-client";
 import { Student, Teacher } from "@/models";
-import { BottomSheetContext } from "@/store/bottomSheetContext";
+import { BottomSheetContext } from "@/store/providers/BottomSheetContext";
 import {
   ConfirmationModalContext,
   ConfirmationModalPropsType,
@@ -12,16 +12,16 @@ import {
   defaultModalProps,
   ModalContext,
   ModalPropsType,
-} from "@/store/modalContext";
-import { defaultUserData, UserContext } from "@/store/userContext";
+} from "@/store/providers/ModalContext";
+import { defaultUserData, UserContext } from "@/store/providers/UserContext";
 
 import { router } from "expo-router";
 import { useContext } from "react";
 import { ScrollView, View } from "react-native";
 import { Avatar, List } from "react-native-paper";
 
-import { Index as ConfirmationModal } from "@/components/confirmationModal";
-import { Index as Loading } from "@/components/loading";
+import { Index as ConfirmationModal } from "@/components/common/confirmationModal";
+import { Index as Loading } from "@/components/common/loading";
 
 export default function Index() {
   const { userData, setUserData } = useContext(UserContext);
@@ -67,7 +67,7 @@ export default function Index() {
       await setConfirmationModalProps((prev: ConfirmationModalPropsType) => ({
         ...defaultConfirmationModalProps,
       }));
-      router.replace("/(auth)/whoAreYou");
+      router.replace("/(auth)/who-are-you");
     }, 100);
   };
 
@@ -125,7 +125,7 @@ export default function Index() {
                 variant="headlineSmall"
                 disableTranslation={true}
               >
-                {`${profileDetail?.first_name} ${profileDetail?.middle_name} ${userData?.role === "teacher" ? "" : profileDetail?.middle_name}`}
+                {`${profileDetail?.first_name} ${profileDetail?.middle_name} ${userData?.role === "student" ? profileDetail?.last_name : ""}`}
               </Text>
               <Text
                 className="text-gray-500"
