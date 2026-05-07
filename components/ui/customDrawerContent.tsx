@@ -1,7 +1,7 @@
-import { UserContext } from "@/store/userContext";
+import { UserContext } from "@/store/providers/UserContext";
 import {
-  DrawerContentScrollView,
-  DrawerItemList,
+    DrawerContentScrollView,
+    DrawerItemList,
 } from "@react-navigation/drawer";
 import Constants from "expo-constants";
 import React, { useContext } from "react";

@@ -1,6 +1,6 @@
 import { CustomHeaderOption } from "@/app/(auth)/_layout";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
-import { UtilContext } from "@/store/utilContext";
+import { UtilContext } from "@/store/providers/UtilContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router, Stack } from "expo-router";
 import { useContext } from "react";
@@ -17,7 +17,7 @@ export default function BehaiorLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
-        name="list"
+        name="index"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "My report",
@@ -27,7 +27,7 @@ export default function BehaiorLayout() {
           },
           headerRight: () => (
             <TouchableOpacity
-              onPress={() => router.push("/(app)/(behavior-report)/form")}
+              onPress={() => router.push("/(app)/(behavior-report)/new")}
             >
               <Ionicons
                 name="add-circle-outline"
@@ -40,7 +40,7 @@ export default function BehaiorLayout() {
         })}
       />
       <Stack.Screen
-        name="form"
+        name="new"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: Util.routeTitle ?? "New Behavior Report",
@@ -51,7 +51,7 @@ export default function BehaiorLayout() {
         })}
       />
       <Stack.Screen
-        name="detail"
+        name="[id]"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Report Detail",

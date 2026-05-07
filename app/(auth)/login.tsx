@@ -1,7 +1,7 @@
 import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { PasswordInput, TextInput } from "@/components/ui/textinput";
-import { signIn } from "@/lib/auth-client";
+import { signIn } from "@/lib/auth/auth-client";
 import { LoginForm, loginSchema } from "@/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
@@ -16,8 +16,8 @@ import {
   defaultModalProps,
   ModalContext,
   ModalPropsType,
-} from "@/store/modalContext";
-import { UserContext, UserDataType } from "@/store/userContext";
+} from "@/store/providers/ModalContext";
+import { UserContext, UserDataType } from "@/store/providers/UserContext";
 import Toast from "react-native-toast-message";
 
 export default function Index() {
@@ -188,7 +188,7 @@ export default function Index() {
       <View className="flex-row justify-center items-center mr-2">
         <TouchableOpacity
           onPress={() => {
-            router.push("/forgetPassword");
+            router.push("/(auth)/forget-password");
           }}
         >
           <Text className="text-blue-500 text-base">Forgot Password ?</Text>

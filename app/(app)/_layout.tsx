@@ -1,10 +1,10 @@
-import { Index as Loading } from "@/components/loading";
+import { Index as Loading } from "@/components/common/loading";
 import { useApiQuery } from "@/hooks/useApi";
 import { AcademicYear } from "@/models";
-import { IdsContext } from "@/store/idsContext";
-import { queryClient } from "@/store/query-client";
-import { UserContext, UserDataType } from "@/store/userContext";
-import { UtilContext } from "@/store/utilContext";
+import { IdsContext } from "@/store/providers/IdContext";
+import { UserContext, UserDataType } from "@/store/providers/UserContext";
+import { UtilContext } from "@/store/providers/UtilContext";
+import { queryClient } from "@/store/query/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, Stack } from "expo-router";
 import { useContext, useEffect, useState } from "react";

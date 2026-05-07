@@ -1,6 +1,6 @@
+import { UserContext } from "@/store/providers/UserContext";
 import { Redirect } from "expo-router";
 import { useContext } from "react";
-import { UserContext } from "@/store/userContext";
 
 export default function AppIndex() {
   const { userData } = useContext(UserContext);

@@ -12,7 +12,7 @@ export default function LearningMaterialLayout() {
   return (
     <Stack screenOptions={{ headerShown: true }}>
       <Stack.Screen
-        name="myUploads"
+        name="my-upload"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "My Uploads",
@@ -23,7 +23,7 @@ export default function LearningMaterialLayout() {
         })}
       />
       <Stack.Screen
-        name="newUpload"
+        name="new"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Upload Material",
@@ -34,7 +34,7 @@ export default function LearningMaterialLayout() {
         })}
       />
       <Stack.Screen
-        name="availableMaterials"
+        name="index"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Available Materials",
@@ -45,7 +45,7 @@ export default function LearningMaterialLayout() {
         })}
       />
       <Stack.Screen
-        name="materialDetail"
+        name="[id]"
         options={CustomHeaderOption({
           backIcon: backIcon,
           title: "Material Detail",

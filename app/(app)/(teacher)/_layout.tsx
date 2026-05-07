@@ -93,7 +93,7 @@ export default function TeacherLayout() {
       />
 
       <Drawer.Screen
-        name="library"
+        name="library-item"
         options={{
           title: "Library",
           drawerIcon: ({ size, color }) => (

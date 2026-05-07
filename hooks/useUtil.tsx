@@ -1,5 +1,6 @@
 import { useApiQuery } from "@/hooks/useApi";
 import { levels_of_education, selectType } from "@/models";
+import dayjs from "dayjs";
 
 const gradeMap: Record<
   levels_of_education,
@@ -95,6 +96,14 @@ export const useUtil = () => {
       .map((g) => ({ label: g.label, value: g.value }));
   };
 
+  const GRADE_VALUES = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+
+  const formatDate = (value?: string | Date | null) => {
+    if (!value) return "-";
+    const parsed = dayjs(value);
+    return parsed.isValid() ? parsed.format("MMM D, YYYY") : String(value);
+  };
+
   return {
     getGrades,
     getGradeLabel,
@@ -102,5 +111,7 @@ export const useUtil = () => {
     gettingServerDate,
     get_speciality_label,
     subjects,
+    GRADE_VALUES,
+    formatDate,
   };
 };
