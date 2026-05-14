@@ -13,7 +13,10 @@ import {
   ModalContext,
   ModalPropsType,
 } from "@/store/providers/ModalContext";
-import { defaultUserData, UserContext } from "@/store/providers/UserContext";
+import {
+  defaultUserData,
+  UserContext,
+} from "@/store/providers/UserContext";
 
 import { router } from "expo-router";
 import { useContext } from "react";
@@ -24,7 +27,8 @@ import { Index as ConfirmationModal } from "@/components/common/confirmationModa
 import { Index as Loading } from "@/components/common/loading";
 
 export default function Index() {
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData, setUserData, clearPersistedUserData } =
+    useContext(UserContext);
   const { setConfirmationModalProps } = useContext(ConfirmationModalContext);
   const { setModalProps } = useContext(ModalContext);
   const { openBottomSheet, closeBottomSheet } = useContext(BottomSheetContext);
@@ -44,6 +48,7 @@ export default function Index() {
         loadingText: "Logging out...",
       }));
       await signOut();
+      await clearPersistedUserData();
       clearDatas();
     } catch (e: any) {
       setModalProps((prev: ModalPropsType) => ({
