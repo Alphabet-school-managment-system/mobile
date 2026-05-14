@@ -1,8 +1,8 @@
-import { renderItemTypeBadge } from "@/app/(app)/(library)/ItemTypeBadge";
 import { Index as Loading } from "@/components/common/loading";
 import { Index as Menu, MenuItemtype } from "@/components/common/menu";
 import { Text } from "@/components/ui/text";
 import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
+import { Index as LibraryItemTypeBadge } from "@/features/library-item/components/LibraryItemTypeBadge";
 import { useApiQuery } from "@/hooks/useApi";
 import { LibraryItem, LibraryItemLoan } from "@/models";
 import { BottomSheetContext } from "@/store/providers/BottomSheetContext";
@@ -163,7 +163,7 @@ export default function Index() {
         <View className="items-end justify-center">
           {item.libraryitem?.item_type ? (
             <View className="mt-2">
-              {renderItemTypeBadge(item.libraryitem.item_type)}
+              {LibraryItemTypeBadge(item.libraryitem.item_type)}
             </View>
           ) : (
             <View className="h-6" />

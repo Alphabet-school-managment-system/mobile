@@ -2,16 +2,16 @@ import { Index as ConfirmationModal } from "@/components/common/confirmationModa
 import { Index as Loading } from "@/components/common/loading";
 import Button, { buttonMode } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
-import { renderItemTypeBadge } from "@/features/library/components/ItemTypeBadge";
+import { Index as LibraryItemTypeBadge } from "@/features/library-item/components/LibraryItemTypeBadge";
 import { useApiMutation, useApiQuery } from "@/hooks/useApi";
 import { useUtil } from "@/hooks/useUtil";
 import { LibraryItem } from "@/models";
 import { IdsContext } from "@/store/providers/IdContext";
 import {
-    ConfirmationModalContext,
-    defaultModalProps,
-    ModalContext,
-    ModalPropsType,
+  ConfirmationModalContext,
+  defaultModalProps,
+  ModalContext,
+  ModalPropsType,
 } from "@/store/providers/ModalContext";
 import { UserContext } from "@/store/providers/UserContext";
 import ReadMore from "@fawazahmed/react-native-read-more";
@@ -106,7 +106,7 @@ export default function Index() {
     }
 
     if (key === "item_type") {
-      return renderItemTypeBadge(value);
+      return LibraryItemTypeBadge(value);
     }
 
     if (key === "grade") {
@@ -272,7 +272,7 @@ export default function Index() {
                   </Text>
                   {key === "item_type" ? (
                     <View style={{ alignSelf: "flex-start" }}>
-                      {renderItemTypeBadge(String(value))}
+                      {LibraryItemTypeBadge(String(value))}
                     </View>
                   ) : (
                     (() => {

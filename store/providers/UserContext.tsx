@@ -29,6 +29,7 @@ export type AppData = {
 export type UserContextType = {
   userData: UserDataType;
   setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
+  clearPersistedUserData: () => Promise<void>;
   isHydrated: boolean;
 };
 export const defaultUserData: UserDataType = {
@@ -51,6 +52,7 @@ const USER_DATA_STORAGE_KEY = "alphabet-user-data";
 export const UserContext = createContext<UserContextType>({
   userData: defaultUserData,
   setUserData: () => {},
+  clearPersistedUserData: async () => {},
   isHydrated: false,
 });
 
@@ -129,8 +131,18 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
     persistUserData();
   }, [isHydrated, userData]);
 
+  const clearPersistedUserData = async () => {
+    try {
+      await AsyncStorage.removeItem(USER_DATA_STORAGE_KEY);
+    } catch (error) {
+      console.warn("Failed to clear persisted user data", error);
+    }
+  };
+
   return (
-    <UserContext.Provider value={{ userData, setUserData, isHydrated }}>
+    <UserContext.Provider
+      value={{ userData, setUserData, clearPersistedUserData, isHydrated }}
+    >
       {children}
     </UserContext.Provider>
   );
