@@ -85,11 +85,11 @@ function AppLayoutContent() {
   }
 
   if (!userData?.skipOnboarding) {
-    return <Redirect href="/(auth)/onBoarding" />;
+    return <Redirect href="/(auth)/onboarding" />;
   }
 
   if (!userData?.role) {
-    return <Redirect href="/(auth)/whoAreYou" />;
+    return <Redirect href="/(auth)/who-are-you" />;
   }
 
   if (!userData?.better_auth_token) {
