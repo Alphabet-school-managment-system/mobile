@@ -17,5 +17,5 @@ export default function AppIndex() {
     return <Redirect href="/(app)/(parent)" />;
   }
 
-  return <Redirect href="/(auth)/whoAreYou" />;
+  return <Redirect href="/(auth)/who-are-you" />;
 }
