@@ -1,12 +1,5 @@
-import { Stack } from "expo-router";
+import { Index as SidebarBaseLayout } from "@/components/common/SidebarBaseLayout";
 
 export default function StudentLayout() {
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: true,
-        title: "Student",
-      }}
-    />
-  );
+  return <SidebarBaseLayout />;
 }
