@@ -8,6 +8,7 @@ import { queryClient } from "@/store/query/query-client";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Redirect, Stack } from "expo-router";
 import { useContext, useEffect, useState } from "react";
+import { View } from "react-native";
 
 function AppLayoutContent() {
   const { userData, setUserData, isHydrated } = useContext(UserContext);
@@ -81,7 +82,11 @@ function AppLayoutContent() {
   }, [apiEndpoint, ids, hasIdsError, isGettingIds, setIds]);
 
   if (!isHydrated) {
-    return <Loading showLoadingSpin loadingText="Restoring session..." />;
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Loading showLoadingSpin loadingText="Restoring session..." />
+      </View>
+    );
   }
 
   if (!userData?.skipOnboarding) {
@@ -97,7 +102,11 @@ function AppLayoutContent() {
   }
 
   if (!idsReady) {
-    return <Loading showLoadingSpin loadingText="Loading account data..." />;
+    return (
+      <View className="flex-1 items-center justify-center">
+        <Loading showLoadingSpin loadingText="Loading account data..." />
+      </View>
+    );
   }
 
   return (

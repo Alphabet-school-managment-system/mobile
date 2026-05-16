@@ -75,7 +75,11 @@ export default function Index() {
               ...defaultModalProps,
               show: false,
             }));
-            router.push("/(app)/(teacher)/dashboard");
+            if (context?.data?.user?.role === "student") {
+              router.push("/(app)/(student)/dashboard");
+            } else if (context?.data?.user?.role === "teacher") {
+              router.push("/(app)/(teacher)/dashboard");
+            }
           }, 100);
         },
       },
