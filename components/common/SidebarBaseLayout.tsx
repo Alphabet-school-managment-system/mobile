@@ -31,11 +31,6 @@ export function Index() {
       title: "Library",
       icon: "library-outline" as const,
     },
-    {
-      name: "weekly-schedule",
-      title: "Weekly Schedule",
-      icon: "calendar-outline" as const,
-    },
   ];
 
   const teacherScreens = [
@@ -56,6 +51,11 @@ export function Index() {
       icon: "briefcase-outline" as const,
     },
     {
+      name: "teacher-weekly-schedule",
+      title: "Weekly Schedule",
+      icon: "calendar-outline" as const,
+    },
+    {
       name: "profile",
       title: "Profile",
       icon: "person-outline" as const,
@@ -64,6 +64,11 @@ export function Index() {
 
   const studentScreens = [
     ...sharedScreens,
+    {
+      name: "student-weekly-schedule",
+      title: "Weekly Schedule",
+      icon: "calendar-outline" as const,
+    },
     {
       name: "profile",
       title: "Profile",

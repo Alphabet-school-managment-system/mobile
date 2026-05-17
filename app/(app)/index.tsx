@@ -10,7 +10,7 @@ export default function AppIndex() {
   }
 
   if (userData?.role === "student") {
-    return <Redirect href="/(app)/(student)" />;
+    return <Redirect href="/(app)/(student)/dashboard" />;
   }
 
   if (userData?.role === "parent") {
