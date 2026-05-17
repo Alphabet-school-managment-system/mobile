@@ -73,6 +73,8 @@ function AppLayoutContent() {
         id: ids?.user?.id,
         token: ids?.token,
         subject_specialization: ids?.user?.subject_specialization,
+        grade: ids?.enrollment?.grade,
+        section: ids?.enrollment?.section,
       }));
     }
 

@@ -20,6 +20,8 @@ export type UserDataType = {
   skipOnboarding?: boolean;
   token?: string;
   subject_specialization?: string;
+  grade?: number | string;
+  section?: string;
 };
 
 export type AppData = {
@@ -45,6 +47,8 @@ export const defaultUserData: UserDataType = {
   skipOnboarding: false,
   token: undefined,
   subject_specialization: undefined,
+  grade: undefined,
+  section: undefined,
 };
 
 const USER_DATA_STORAGE_KEY = "alphabet-user-data";
@@ -67,7 +71,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({
 
     const hydrateUserData = async () => {
       try {
-        const storedUserData = await AsyncStorage.getItem(USER_DATA_STORAGE_KEY);
+        const storedUserData = await AsyncStorage.getItem(
+          USER_DATA_STORAGE_KEY,
+        );
 
         if (!isMounted) {
           return;
