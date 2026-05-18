@@ -1,6 +1,6 @@
 import { DAYS, TimetableTeacher, WeekDay } from "../types";
 
-export const useStudentWeeklySchedule = () => {
+export const useWeeklySchedule = () => {
   const getTeacherName = (teacher?: TimetableTeacher) =>
     [teacher?.first_name, teacher?.middle_name]
       .filter((part) => Boolean(part && String(part).trim()))

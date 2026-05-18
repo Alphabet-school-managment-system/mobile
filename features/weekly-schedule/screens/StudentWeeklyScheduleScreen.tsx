@@ -1,18 +1,17 @@
+import { Text } from "@/components/ui/text";
 import { BottomSheetContext } from "@/store/providers/BottomSheetContext";
 import { IdsContext } from "@/store/providers/IdContext";
 import { UserContext } from "@/store/providers/UserContext";
 import { useContext } from "react";
 import { FlatList, View } from "react-native";
-
-import { Text } from "@/components/ui/text";
 import { ScheduleDaysRow } from "../components/ScheduleDaysRow";
 import { StudentScheduleBottomSheetContent } from "../components/StudentScheduleBottomSheetContent";
-import { StudentWeeklyScheduleListHeader } from "../components/StudentWeeklyScheduleListHeader";
-import { useStudentWeeklySchedule } from "../hooks/useStudentWeeklySchedule";
+import { WeeklyScheduleListHeader } from "../components/WeeklyScheduleListHeader";
+import { useWeeklySchedule } from "../hooks/useWeeklySchedule";
 import { DAYS, WeekDay } from "../types";
 
 export default function StudentWeeklyScheduleScreen() {
-  const { getDayTitle } = useStudentWeeklySchedule();
+  const { getDayTitle } = useWeeklySchedule();
   const { userData } = useContext(UserContext);
   const { Ids } = useContext(IdsContext);
   const { openBottomSheet } = useContext(BottomSheetContext);
@@ -42,7 +41,7 @@ export default function StudentWeeklyScheduleScreen() {
           paddingBottom: 32,
           gap: 12,
         }}
-        ListHeaderComponent={<StudentWeeklyScheduleListHeader />}
+        ListHeaderComponent={<WeeklyScheduleListHeader />}
         renderItem={({ item }) => {
           return (
             <ScheduleDaysRow
