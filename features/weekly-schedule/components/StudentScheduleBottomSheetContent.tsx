@@ -7,7 +7,7 @@ import { UserContext } from "@/store/providers/UserContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useContext, useMemo } from "react";
 import { ScrollView, View } from "react-native";
-import { useStudentWeeklySchedule } from "../hooks/useStudentWeeklySchedule";
+import { useWeeklySchedule } from "../hooks/useWeeklySchedule";
 import { TimetableRecord, WeekDay } from "../types";
 
 export const StudentScheduleBottomSheetContent = ({
@@ -15,8 +15,7 @@ export const StudentScheduleBottomSheetContent = ({
 }: {
   day: WeekDay;
 }) => {
-  const { getDayTitle, getPeriodOrder, getTeacherName } =
-    useStudentWeeklySchedule();
+  const { getDayTitle, getPeriodOrder, getTeacherName } = useWeeklySchedule();
   const { userData } = useContext(UserContext);
   const { Ids } = useContext(IdsContext);
   const scheduleEndpoint = useMemo(() => {

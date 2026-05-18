@@ -1,7 +1,7 @@
 import {
-    Index as Menu,
-    MenuItemtype,
-    type MenuSearchConfig,
+  Index as Menu,
+  MenuItemtype,
+  type MenuSearchConfig,
 } from "@/components/common/menu";
 import { Text } from "@/components/ui/text";
 import { ErrorMessage } from "@/components/ui/textinput";

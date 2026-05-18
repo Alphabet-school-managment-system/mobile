@@ -1,1 +1,1 @@
-export { default } from "@/features/student-weekly-schedule/screens/StudentWeeklyScheduleScreen";
+export { default } from "@/features/weekly-schedule/screens/StudentWeeklyScheduleScreen";
