@@ -3,7 +3,7 @@ import { Index as TouchableOpacity } from "@/components/ui/touchableOpacity";
 import { UserContext } from "@/store/providers/UserContext";
 import { Ionicons } from "@expo/vector-icons";
 import { Drawer } from "expo-router/drawer";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 
@@ -11,15 +11,11 @@ export function Index() {
   const { colors } = useTheme();
   const { userData } = useContext(UserContext);
 
-  useEffect(() => {
-    console.log("%cSidebarBaseLayout userData", "color: #007acc;", userData);
-  }, [userData]);
-
   const sharedScreens = [
     {
       name: "dashboard",
       title: "Dashboard",
-      icon: "home-outline" as const,
+      icon: "grid-outline" as const,
     },
     {
       name: "learning-material",
@@ -63,6 +59,11 @@ export function Index() {
   ];
 
   const studentScreens = [
+    {
+      name: "home",
+      title: "Home",
+      icon: "home-outline" as const,
+    },
     ...sharedScreens,
     {
       name: "student-weekly-schedule",

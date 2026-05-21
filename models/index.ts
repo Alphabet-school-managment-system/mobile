@@ -314,9 +314,13 @@ export interface Dashboard {
 
 export type levels_of_education =
   | "kg"
-  | "primary"
+  | "lower_primary"
+  | "middle_primary"
+  | "upper_primary"
   | "secondary"
   | "college_prep";
+
+export type stream = "Natural_Sciences" | "Social_Sciences" | "General";
 
 export type selectType = {
   label: string;
