@@ -6,7 +6,7 @@ export default function Index() {
     {
       icon: <FontAwesome name="calendar-check-o" size={30} color="white" />,
       title: "Take Attendance",
-      route: "/(app)/(attendance)/index",
+      route: "/(app)/(attendance)",
     },
   ];
 

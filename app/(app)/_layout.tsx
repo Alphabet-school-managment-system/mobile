@@ -70,9 +70,10 @@ function AppLayoutContent() {
       });
       setUserData((prev: UserDataType) => ({
         ...prev,
-        id: ids?.user?.id,
+        id: ids?.enrollment?.id,
         token: ids?.token,
         subject_specialization: ids?.user?.subject_specialization,
+        stream: ids?.enrollment?.stream,
         grade: ids?.enrollment?.grade,
         section: ids?.enrollment?.section,
       }));

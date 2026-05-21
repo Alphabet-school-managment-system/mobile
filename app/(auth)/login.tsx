@@ -23,7 +23,7 @@ import Toast from "react-native-toast-message";
 export default function Index() {
   const [checked, setChecked] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { setUserData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const { setModalProps } = useContext(ModalContext);
 
   const { colors } = useTheme();
@@ -35,7 +35,10 @@ export default function Index() {
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "surafelhabte92@gmail.com",
+      email:
+        userData?.role === "student"
+          ? "student@gmail.com"
+          : "surafelhabte92@gmail.com",
       password: "Abcd@5304",
       rememberMe: checked,
     },
@@ -76,7 +79,7 @@ export default function Index() {
               show: false,
             }));
             if (context?.data?.user?.role === "student") {
-              router.push("/(app)/(student)/dashboard");
+              router.push("/(app)/(student)/home");
             } else if (context?.data?.user?.role === "teacher") {
               router.push("/(app)/(teacher)/dashboard");
             }

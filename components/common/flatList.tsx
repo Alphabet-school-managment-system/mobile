@@ -15,7 +15,7 @@ export type FlatListProps<T> = {
   header: ReactElement | string;
   renderItem: ListRenderItem<T>;
   enableFetch: boolean;
-  emptyDataTitle: string;
+  emptyDataTitle: string | ReactElement;
 };
 
 const FlatList = <T,>({
@@ -98,11 +98,15 @@ const FlatList = <T,>({
             flexGrow: data?.length > 0 ? 1 : 0,
           }}
           ListEmptyComponent={
-            <View className="flex-1 items-center justify-center">
-              <Text className="text-gray-500" variant="bodyLarge">
-                {emptyDataTitle}
-              </Text>
-            </View>
+            typeof emptyDataTitle === "string" ? (
+              <View className="flex-1 items-center justify-center">
+                <Text className="text-gray-500" variant="bodyLarge">
+                  {emptyDataTitle}
+                </Text>
+              </View>
+            ) : (
+              emptyDataTitle
+            )
           }
           showsVerticalScrollIndicator={false}
           initialNumToRender={8}
