@@ -6,6 +6,7 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
+import { stream } from "@/models";
 
 export type UserDataType = {
   id?: string;
@@ -20,6 +21,7 @@ export type UserDataType = {
   skipOnboarding?: boolean;
   token?: string;
   subject_specialization?: string;
+  stream?: stream;
   grade?: number | string;
   section?: string;
 };
@@ -47,6 +49,7 @@ export const defaultUserData: UserDataType = {
   skipOnboarding: false,
   token: undefined,
   subject_specialization: undefined,
+  stream: undefined,
   grade: undefined,
   section: undefined,
 };
