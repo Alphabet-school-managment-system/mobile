@@ -198,7 +198,7 @@ export default function Index() {
             Score
           </Text>
           <Text className="text-gray-900" variant="titleMedium">
-            {item?.mark[0].score ?? "-- Not set --"}
+            {item?.mark[0]?.score ?? "-- Not set --"}
           </Text>
         </View>
       }

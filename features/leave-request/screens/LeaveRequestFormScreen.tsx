@@ -18,25 +18,34 @@ import { useContext, useEffect, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { View } from "react-native";
 import Toast from "react-native-toast-message";
+import { ParamsType } from "./LeaveRequestListScreen";
 
 export default function Index() {
   const apiRoute = "leave-request";
   const { userData } = useContext(UserContext);
   const { Ids } = useContext(IdsContext);
-  const { leaveRequest: stringfiedData } = useLocalSearchParams<{
+  const { leaveRequest: stringfiedData, params } = useLocalSearchParams<{
     leaveRequest?: string;
+    params?: string;
   }>();
   const parsedData = useMemo<LeaveRequest | undefined>(
     () =>
       stringfiedData ? (JSON.parse(stringfiedData) as LeaveRequest) : undefined,
+
     [stringfiedData],
   );
+  const parsedParams = useMemo<ParamsType | undefined>(
+    () => (params ? (JSON.parse(params) as ParamsType) : undefined),
+    [params],
+  );
+
   const form = useForm<LeaveRequestForm>({
     resolver: zodResolver(leaveRequestFormSchema),
     defaultValues: {
       academic_year_id: Ids?.academicYearId || "",
-      [userData?.role === "student" ? "student_id" : "teacher_id"]:
-        userData?.id || "",
+      [parsedParams ? "student_id" : "teacher_id"]: parsedParams
+        ? parsedParams.id
+        : userData?.id || "",
       start_date: dayjs().toDate(),
       end_date: undefined,
       note: "",
@@ -80,7 +89,7 @@ export default function Index() {
               text2: "Leave request submitted successfully",
             });
             setTimeout(() => {
-              router.push("/(app)/(leave-request)/index");
+              router.push("/(app)/(leave-request)");
             }, 100);
           },
         },
@@ -120,13 +129,15 @@ export default function Index() {
 
   return (
     <View className="flex-1 p-5 bg-white">
-      <Text
-        className="text-red-600 border-2 border-red-600 p-2 mb-4 rounded-md"
-        variant="bodyMedium"
-      >
-        The request must be approved by the administration before the start date
-        of the leave.
-      </Text>
+      {parsedParams && parsedParams.showHeader && (
+        <View className="border rounded-lg border-gray-500 border-dashed flex justify-center items-center py-4 mb-4">
+          <Text variant="titleMedium" className="mb-1">
+            {`You are requesting a leave of absence for
+            ${parsedParams.first_name} ${parsedParams.last_name} as a parent.`}
+          </Text>
+        </View>
+      )}
+
       <Controller
         control={control}
         name="start_date"
