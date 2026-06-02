@@ -70,7 +70,8 @@ function AppLayoutContent() {
       });
       setUserData((prev: UserDataType) => ({
         ...prev,
-        id: ids?.enrollment?.id,
+        id: ids?.user?.id,
+        first_name: ids?.user?.first_name ?? prev.first_name,
         token: ids?.token,
         subject_specialization: ids?.user?.subject_specialization,
         stream: ids?.enrollment?.stream,

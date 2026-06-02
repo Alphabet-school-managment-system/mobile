@@ -7,6 +7,21 @@ import { useContext } from "react";
 import { View } from "react-native";
 import { useTheme } from "react-native-paper";
 
+export const CustomHeaderRightIcons = () => {
+  const { colors } = useTheme();
+  return (
+    <View className="flex-row mr-5 gap-5">
+      <TouchableOpacity onPress={() => console.log("Messages")}>
+        <Ionicons name="chatbubble-outline" size={24} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => console.log("Notifications")}>
+        <Ionicons name="notifications" size={24} color={colors.primary} />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 export function Index() {
   const { colors } = useTheme();
   const { userData } = useContext(UserContext);
@@ -77,8 +92,25 @@ export function Index() {
     },
   ];
 
+  const parentScreens = [
+    {
+      name: "home",
+      title: "Home",
+      icon: "home-outline" as const,
+    },
+    {
+      name: "profile",
+      title: "Profile",
+      icon: "person-outline" as const,
+    },
+  ];
+
   const screens =
-    userData?.role === "teacher" ? teacherScreens : studentScreens;
+    userData?.role === "teacher"
+      ? teacherScreens
+      : userData?.role === "parent"
+        ? parentScreens
+        : studentScreens;
 
   return (
     <Drawer
@@ -103,17 +135,7 @@ export function Index() {
 
         drawerInactiveBackgroundColor: "transparent",
         drawerInactiveTintColor: "#374151",
-        headerRight: () => (
-          <View className="flex-row mr-5 gap-5">
-            <TouchableOpacity onPress={() => console.log("Messages")}>
-              <Ionicons name="chatbubble-outline" size={24} />
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={() => console.log("Notifications")}>
-              <Ionicons name="notifications" size={24} color={colors.primary} />
-            </TouchableOpacity>
-          </View>
-        ),
+        headerRight: () => <CustomHeaderRightIcons />,
       }}
       drawerContent={(props) => <CustomDrawerContent {...props} />}
     >

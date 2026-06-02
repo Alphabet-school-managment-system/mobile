@@ -81,8 +81,9 @@ export interface Enrollment {
   id: string;
   academic_year_id: string;
   student_id: string;
-  class: string;
+  grade: string;
   section?: string | null;
+  stream?: stream | null;
   isTransferred?: boolean | null;
   transferredFrom?: string | null;
   note?: string | null;

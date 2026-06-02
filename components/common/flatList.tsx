@@ -6,48 +6,77 @@ import {
     ModalPropsType,
 } from "@/store/providers/ModalContext";
 import React, { ReactElement, useContext, useEffect } from "react";
-import { ListRenderItem, FlatList as MainFlatList, View } from "react-native";
+import {
+  FlatList as MainFlatList,
+  ListRenderItem,
+  StyleProp,
+  View,
+  ViewStyle,
+} from "react-native";
 import { useTheme } from "react-native-paper";
 import { Text } from "../ui/text";
 
 export type FlatListProps<T> = {
-  apiEndpoint: string;
+  apiEndpoint?: string;
+  data?: T[];
   header: ReactElement | string;
   renderItem: ListRenderItem<T>;
   enableFetch: boolean;
   emptyDataTitle: string | ReactElement;
+  alternateRowStyle?: boolean;
+  containerClassName?: string;
+  contentContainerStyle?: StyleProp<ViewStyle>;
+  keyExtractor?: (item: T, index: number) => string;
 };
 
 const FlatList = <T,>({
   apiEndpoint,
+  data,
   header,
   renderItem,
   enableFetch,
   emptyDataTitle,
+  alternateRowStyle = true,
+  containerClassName,
+  contentContainerStyle,
+  keyExtractor,
 }: FlatListProps<T>) => {
   const { colors } = useTheme();
-  const { data, isLoading, isFetching, error, refetch } = useApiQuery<any>(
-    [apiEndpoint],
-    apiEndpoint,
-    enableFetch && !!apiEndpoint,
-  );
+  const shouldFetch = enableFetch && !!apiEndpoint && data === undefined;
+  const {
+    data: fetchedData,
+    isLoading,
+    isFetching,
+    error,
+    refetch,
+  } = useApiQuery<any>([apiEndpoint ?? ""], apiEndpoint ?? "", shouldFetch);
+
+  const listData = data ?? fetchedData ?? [];
+  const listError = data !== undefined ? undefined : error;
+  const listLoading = data !== undefined ? false : isLoading || isFetching;
 
   const { setModalProps } = useContext(ModalContext);
 
   useEffect(() => {
+    if (!shouldFetch) return;
     refetch();
-  }, [apiEndpoint]);
+  }, [apiEndpoint, refetch, shouldFetch]);
 
   useEffect(() => {
+    if (!shouldFetch) return;
     setModalProps((prev: ModalPropsType) => {
       return {
         ...defaultModalProps,
         show: isFetching,
       };
     });
-  }, [isFetching]);
+  }, [isFetching, shouldFetch]);
 
   const renderItemWithRowStyle: ListRenderItem<T> = (info) => {
+    if (!alternateRowStyle) {
+      return renderItem(info);
+    }
+
     const element = renderItem(info);
     const isOdd = info.index % 2 === 1;
     const rowStyle = {
@@ -73,30 +102,35 @@ const FlatList = <T,>({
   };
 
   return (
-    <View className="flex-1 bg-white px-4 pt-5">
+    <View
+      className={`flex-1 bg-white px-4 pt-5 ${containerClassName ?? ""}`}
+    >
       {header ?? (
         <Text className="mb-3 font-bold" variant="headlineSmall">
           {header}
         </Text>
       )}
 
-      {isFetching ? (
+      {listLoading ? (
         <Loading />
-      ) : error ? (
+      ) : listError ? (
         <View className="flex-1 items-center justify-center px-4">
           <Text className="text-red-600 text-center" variant="bodyLarge">
-            {error instanceof Error ? error.message : "Failed to load"}
+            {listError instanceof Error ? listError.message : "Failed to load"}
           </Text>
         </View>
       ) : (
         <MainFlatList
-          data={data}
+          data={listData}
           renderItem={renderItemWithRowStyle}
-          keyExtractor={(item: any, index) => item.id || `${index}`}
-          contentContainerStyle={{
-            paddingBottom: 20,
-            flexGrow: data?.length > 0 ? 1 : 0,
-          }}
+          keyExtractor={keyExtractor ?? ((item: any, index) => item.id || `${index}`)}
+          contentContainerStyle={[
+            {
+              paddingBottom: 20,
+              flexGrow: listData?.length > 0 ? 1 : 0,
+            },
+            contentContainerStyle,
+          ]}
           ListEmptyComponent={
             typeof emptyDataTitle === "string" ? (
               <View className="flex-1 items-center justify-center">

@@ -15,12 +15,14 @@ export const CustomHeaderOption = ({
   onBackPress,
   backIcon,
   headerRight,
+  showBackIcon = true,
 }: {
   title: string;
   headerShown?: boolean;
   onBackPress?: () => void;
   backIcon?: React.ReactNode;
   headerRight?: () => React.ReactNode;
+  showBackIcon?: boolean;
 }): ExtendedStackNavigationOptions => {
   return {
     title: title,
@@ -29,29 +31,31 @@ export const CustomHeaderOption = ({
       color: Colors.darkBlack,
     },
     headerTitleAlign: "center",
-    headerLeft: () => (
-      <TouchableOpacity
-        onPress={() => {
-          if (onBackPress) {
-            onBackPress();
-          } else {
-            router.back();
-          }
-        }}
-      >
-        <>
-          {backIcon ? (
-            backIcon
-          ) : (
-            <MaterialDesignIcons
-              name="arrow-left"
-              size={24}
-              color={Colors.darkBlack}
-            />
-          )}
-        </>
-      </TouchableOpacity>
-    ),
+    headerLeft: showBackIcon
+      ? () => (
+          <TouchableOpacity
+            onPress={() => {
+              if (onBackPress) {
+                onBackPress();
+              } else {
+                router.back();
+              }
+            }}
+          >
+            <>
+              {backIcon ? (
+                backIcon
+              ) : (
+                <MaterialDesignIcons
+                  name="arrow-left"
+                  size={24}
+                  color={Colors.darkBlack}
+                />
+              )}
+            </>
+          </TouchableOpacity>
+        )
+      : undefined,
     headerRight,
   };
 };
