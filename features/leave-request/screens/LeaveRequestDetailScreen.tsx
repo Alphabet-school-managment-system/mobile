@@ -5,10 +5,10 @@ import { StatusIndicator } from "@/constants/status";
 import { useApiMutation } from "@/hooks/useApi";
 import { LeaveRequest } from "@/models";
 import {
-  ConfirmationModalContext,
-  defaultModalProps,
-  ModalContext,
-  ModalPropsType,
+    ConfirmationModalContext,
+    defaultModalProps,
+    ModalContext,
+    ModalPropsType,
 } from "@/store/providers/ModalContext";
 import { UtilContext } from "@/store/providers/UtilContext";
 import dayjs from "dayjs";
@@ -79,7 +79,7 @@ export default function Index() {
           {
             onSuccess: () => {
               setLoading(false);
-              router.replace("/(app)/(leave-request)/index");
+              router.replace("/(app)/(leave-request)");
             },
             onError: () => {
               setLoading(false);

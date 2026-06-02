@@ -1,5 +1,5 @@
 import GradeSectionPicker, {
-  useGradeSectionOptions,
+    useGradeSectionOptions,
 } from "@/components/common/GradeSectionPicker";
 import Button from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
@@ -9,9 +9,9 @@ import { Assessment } from "@/models";
 import { AssessmentForm, assessmentFormSchema } from "@/schema";
 import { IdsContext } from "@/store/providers/IdContext";
 import {
-  defaultModalProps,
-  ModalContext,
-  ModalPropsType,
+    defaultModalProps,
+    ModalContext,
+    ModalPropsType,
 } from "@/store/providers/ModalContext";
 import { UserContext } from "@/store/providers/UserContext";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -100,7 +100,7 @@ export default function Index() {
           });
 
           setTimeout(() => {
-            router.replace("/(app)/(assessment)/index");
+            router.replace("/(app)/(assessment)");
           }, 100);
         },
       },
