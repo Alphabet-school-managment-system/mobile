@@ -4,10 +4,10 @@ import { Text } from "@/components/ui/text";
 import { useApiMutation } from "@/hooks/useApi";
 import { Student } from "@/models";
 import {
-  ConfirmationModalContext,
-  defaultModalProps,
-  ModalContext,
-  ModalPropsType,
+    ConfirmationModalContext,
+    defaultModalProps,
+    ModalContext,
+    ModalPropsType,
 } from "@/store/providers/ModalContext";
 import { UserContext } from "@/store/providers/UserContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -94,7 +94,7 @@ export default function Index() {
           {
             onSuccess: () => {
               setLoading(false);
-              router.replace("/(app)/(behavior-report)/index");
+              router.replace("/(app)/(behavior-report)");
             },
             onError: () => {
               setLoading(false);

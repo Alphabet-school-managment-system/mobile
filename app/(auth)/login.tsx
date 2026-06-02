@@ -38,7 +38,9 @@ export default function Index() {
       email:
         userData?.role === "student"
           ? "student@gmail.com"
-          : "surafelhabte92@gmail.com",
+          : userData?.role === "teacher"
+            ? "surafelhabte92@gmail.com"
+            : "pemilah428@marineso.com",
       password: "Abcd@5304",
       rememberMe: checked,
     },
@@ -82,6 +84,8 @@ export default function Index() {
               router.push("/(app)/(student)/home");
             } else if (context?.data?.user?.role === "teacher") {
               router.push("/(app)/(teacher)/dashboard");
+            } else if (context?.data?.user?.role === "parent") {
+              router.push("/(app)/(parent)");
             }
           }, 100);
         },

@@ -91,7 +91,7 @@ export default function Index() {
           {
             onSuccess: () => {
               setLoading(false);
-              router.replace("/(app)/(assessment)/index");
+              router.replace("/(app)/(assessment)");
             },
             onError: () => {
               setLoading(false);

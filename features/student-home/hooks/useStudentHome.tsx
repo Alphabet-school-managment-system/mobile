@@ -1,20 +1,29 @@
 import { useContext, useMemo } from "react";
 import { UserContext } from "@/store/providers/UserContext";
 import { useUtil } from "@/hooks/useUtil";
+import { stream } from "@/models";
 
-export const useStudentHome = () => {
+type UseStudentHomeOptions = {
+  grade?: number | string | null;
+  stream?: stream | null;
+};
+
+export const useStudentHome = (options?: UseStudentHomeOptions) => {
   const { userData } = useContext(UserContext);
   const { getSubjectsForEnrollment, getGradeLabel, getEducationLevelFromGrade } =
     useUtil();
 
+  const grade = options?.grade ?? userData?.grade;
+  const enrollmentStream = options?.stream ?? userData?.stream;
+
   const educationLevel = useMemo(
-    () => getEducationLevelFromGrade(userData?.grade),
-    [getEducationLevelFromGrade, userData?.grade],
+    () => getEducationLevelFromGrade(grade),
+    [getEducationLevelFromGrade, grade],
   );
 
   const subjects = useMemo(
-    () => getSubjectsForEnrollment(userData?.grade, userData?.stream),
-    [getSubjectsForEnrollment, userData?.grade, userData?.stream],
+    () => getSubjectsForEnrollment(grade, enrollmentStream),
+    [enrollmentStream, getSubjectsForEnrollment, grade],
   );
 
   return {

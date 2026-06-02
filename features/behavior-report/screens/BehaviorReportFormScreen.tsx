@@ -598,7 +598,7 @@ export default function Index() {
           });
 
           setTimeout(() => {
-            router.replace("/(app)/(behavior-report)/index");
+            router.replace("/(app)/(behavior-report)");
           }, 100);
         },
         onError: (error: any) => {

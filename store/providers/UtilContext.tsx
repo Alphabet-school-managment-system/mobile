@@ -5,6 +5,7 @@ export type UtilType = {
   routeTitle?: string;
   serverDate?: string;
   acadamic_year?: AcademicYear;
+  onHeaderRightPress?: () => void;
 };
 
 export type UtilContextType = {
@@ -21,6 +22,7 @@ export const defaultUtilProps: UtilType = {
   routeTitle: undefined,
   serverDate: undefined,
   acadamic_year: undefined,
+  onHeaderRightPress: undefined,
 };
 
 export const UtilProvider: React.FC<{ children: ReactNode }> = ({

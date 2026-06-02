@@ -19,7 +19,7 @@ export default function Index() {
     {
       icon: <SimpleLineIcons name="docs" size={30} color="white" />,
       title: "Available materials",
-      route: "/(app)/(learning-material)/index",
+      route: "/(app)/(learning-material)",
     },
   ];
 

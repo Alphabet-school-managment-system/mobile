@@ -8,7 +8,7 @@ export default function Index() {
     {
       icon: <MaterialCommunityIcons name="bookshelf" size={30} color="white" />,
       title: "Search Items",
-      route: "/(app)/(library-item)/index",
+      route: "/(app)/(library-item)",
     },
     {
       icon: <Octicons name="checklist" size={30} color="white" />,

@@ -32,7 +32,6 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
   const [fetchStudents, setFetchStudents] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [activeStudent, setActiveStudent] = useState<AttendanceStudentData>();
 
   const {
     selectedGradeSec,
@@ -65,7 +64,7 @@ export default function Index() {
     params.set("date", dayjs(selectedDate).format("YYYY-MM-DD"));
 
     return `attendance/?${params.toString()}`;
-  }, [selectedDate, selectedGradeSec?.grade, selectedGradeSec?.section]);
+  }, [Ids?.academicYearId, selectedDate, selectedGradeSec]);
 
   const {
     data,
@@ -95,8 +94,6 @@ export default function Index() {
   }, [loadingStudents]);
 
   const openStatusSheet = (item: AttendanceStudentData) => {
-    setActiveStudent(item);
-
     openBottomSheet({
       title: (
         <Text
@@ -144,7 +141,7 @@ export default function Index() {
           !selectedDate
         }
         extraFilterOption={[
-          <View className="mb-3">
+          <View key="attendance-date-filter" className="mb-3">
             <DatePicker
               label="Date"
               value={selectedDate}
@@ -183,8 +180,6 @@ export default function Index() {
       Util?.serverDate,
       selectedDate,
       selectedGradeDisplay,
-      selectedGradeSec?.grade,
-      selectedGradeSec?.section,
       selectedGradeSec,
       showGradeSectionLoading,
     ],
@@ -243,7 +238,6 @@ export default function Index() {
       />
     );
   };
-  ``;
 
   return (
     <View className="flex-1 bg-white">

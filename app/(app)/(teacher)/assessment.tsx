@@ -13,7 +13,7 @@ export default function Index() {
     {
       icon: <MaterialIcons name="assessment" size={30} color="white" />,
       title: "Browse",
-      route: "/(app)/(assessment)/index",
+      route: "/(app)/(assessment)",
     },
     {
       icon: <Entypo name="book" size={30} color="white" />,

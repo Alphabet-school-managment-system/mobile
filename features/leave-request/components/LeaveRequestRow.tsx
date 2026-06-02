@@ -12,19 +12,21 @@ function LeaveRequestRow({ item }: LeaveRequestRowProps) {
 
   return (
     <TouchableOpacity
-      className="rounded-lg p-4 mb-3"
+      className="rounded-lg py-3 px-4 mb-3 "
       style={{
-        backgroundColor: colors.primary,
+        borderColor: colors.primary,
+        borderWidth: 1,
+        backgroundColor: colors.surface,
       }}
       onPress={() => {
         router.push({
           pathname: "/(app)/(leave-request)/[id]",
-          params: { leaveRequest: JSON.stringify(item) },
+          params: { id: item.id, leaveRequest: JSON.stringify(item) },
         });
       }}
     >
       <View className="flex flex-row items-center justify-between mb-2">
-        <Text className="text-white" variant="titleMedium">
+        <Text className="text-gray-600" variant="titleMedium">
           {`${dayjs(item.start_date).format("MMM D, YYYY")} - ${item.end_date ? dayjs(item.end_date).format("MMM D, YYYY") : "Same Date"}`}
         </Text>
 

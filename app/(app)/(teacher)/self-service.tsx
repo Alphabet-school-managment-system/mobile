@@ -16,12 +16,12 @@ export default function Index() {
         <MaterialCommunityIcons name="list-status" size={30} color="white" />
       ),
       title: "My requests",
-      route: "/(app)/(leave-request)/index",
+      route: "/(app)/(leave-request)",
     },
     {
       icon: <MaterialIcons name="report" size={30} color="white" />,
       title: "Student behavior report",
-      route: "/(app)/(behavior-report)/index",
+      route: "/(app)/(behavior-report)",
     },
   ];
 

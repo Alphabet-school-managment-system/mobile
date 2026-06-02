@@ -1,8 +1,9 @@
+import FlatList from "@/components/common/flatList";
 import { Text } from "@/components/ui/text";
 import { useApiQuery } from "@/hooks/useApi";
 import { UserContext } from "@/store/providers/UserContext";
 import { useContext, useMemo, useState } from "react";
-import { FlatList, View } from "react-native";
+import { View } from "react-native";
 import { Index as FilterHeader } from "../components/BehaviorReportFilterHeader";
 import { Index as BehaviorReportRow } from "../components/BehaviorReportRow";
 import { BehaviorFilter, BehaviorWithEnrollment } from "../types";
@@ -34,12 +35,12 @@ export default function Index() {
   );
 
   return (
-    <View className="flex-1 bg-white">
-      <View className="flex-1 px-4 pt-5">
-        <FlatList
-          data={behaviors}
+    <View className="flex-1">
+      <View className="flex-1">
+        <FlatList<BehaviorWithEnrollment>
+          apiEndpoint={apiEndpoint}
           keyExtractor={(item, index) => item.id || `${index}`}
-          ListHeaderComponent={
+          header={
             <FilterHeader
               activeFilter={activeFilter}
               onFilterChange={setActiveFilter}
@@ -50,18 +51,16 @@ export default function Index() {
             flexGrow: 1,
             paddingBottom: 140,
           }}
-          ListEmptyComponent={
+          emptyDataTitle={
             <View className="flex-1 items-center justify-center px-6">
               <Text className="text-center text-gray-500" variant="bodyLarge">
-                {isLoading
-                  ? "Loading behavior reports..."
-                  : activeFilter === "all"
-                    ? "No behavior reports found."
-                    : `No ${activeFilter.toLowerCase()} behavior reports found.`}
+                {activeFilter === "all"
+                  ? "No behavior reports found."
+                  : `No ${activeFilter.toLowerCase()} behavior reports found.`}
               </Text>
             </View>
           }
-          showsVerticalScrollIndicator={false}
+          enableFetch={false}
         />
       </View>
 
