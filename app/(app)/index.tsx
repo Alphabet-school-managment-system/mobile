@@ -14,7 +14,7 @@ export default function AppIndex() {
   }
 
   if (userData?.role === "parent") {
-    return <Redirect href="/(app)/(parent)" />;
+    return <Redirect href="/(app)/(parent)/home" />;
   }
 
   return <Redirect href="/(auth)/who-are-you" />;

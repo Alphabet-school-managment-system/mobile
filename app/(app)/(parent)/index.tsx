@@ -1,9 +1,5 @@
-import { Text, View } from "react-native";
+import { Redirect } from "expo-router";
 
-export default function Index() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text className="text-xl font-bold">Parent Screen</Text>
-    </View>
-  );
+export default function ParentIndex() {
+  return <Redirect href="/(app)/(parent)/home" />;
 }
